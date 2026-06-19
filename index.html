@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRO 4A Comment Copier</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #132040;
+    --navy-light: #1e3160;
+    --gold: #f5c842;
+    --gold-dim: #c9a22a;
+    --white: #ffffff;
+    --gray-100: #f0f3f8;
+    --gray-200: #dce3ef;
+    --gray-400: #8a9ab8;
+    --green: #22c55e;
+    --card-hover: #1a2d55;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 20px 24px 16px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+
+  header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+
+  header p {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  /* MAIN LAYOUT */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 0;
+  }
+
+  /* DROPDOWN */
+  .select-wrapper {
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .select-wrapper::after {
+    content: '▾';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 18px;
+    pointer-events: none;
+  }
+
+  select {
+    width: 100%;
+    padding: 14px 44px 14px 16px;
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 2px solid var(--navy-light);
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  select:focus {
+    border-color: var(--gold);
+  }
+
+  /* COUNT + HINT */
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 2px;
+  }
+
+  .count-badge {
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+
+  .count-badge span {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .page-info {
+    color: var(--gray-400) !important;
+    font-weight: 500 !important;
+    font-size: 11px;
+  }
+
+  .hint {
+    font-size: 11px;
+    color: var(--gray-400);
+    font-style: italic;
+  }
+
+  /* COMMENT CARDS */
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .comment-card {
+    background: var(--navy-mid);
+    border: 1.5px solid var(--navy-light);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .comment-card:hover {
+    background: var(--card-hover);
+    border-color: var(--gold-dim);
+  }
+
+  .comment-card:active {
+    transform: scale(0.98);
+  }
+
+  .comment-card.copied {
+    border-color: var(--green);
+    background: #0d2a1a;
+  }
+
+  .card-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--navy-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    transition: background 0.15s;
+    margin-top: 1px;
+  }
+
+  .comment-card.copied .card-icon {
+    background: var(--green);
+  }
+
+  .card-text {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #d0daea;
+    flex: 1;
+  }
+
+  .copy-label {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .comment-card:hover .copy-label {
+    opacity: 1;
+  }
+
+  .comment-card.copied .copy-label {
+    color: var(--green);
+    opacity: 1;
+  }
+
+  /* PERSISTENT "ALREADY COPIED" BADGE — stays visible after the flash animation ends */
+  .comment-card.was-copied {
+    border-color: var(--green);
+  }
+
+  .already-copied-badge {
+    flex-shrink: 0;
+    display: none;
+    align-items: center;
+    gap: 4px;
+    align-self: flex-start;
+    margin-top: 1px;
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 20px;
+    padding: 3px 9px 3px 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .comment-card.was-copied .already-copied-badge {
+    display: flex;
+  }
+
+  /* PAGINATION */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 1.5px solid var(--navy-light);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background: var(--card-hover);
+    border-color: var(--gold-dim);
+  }
+
+  .page-btn.active {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+  }
+
+  .page-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .page-ellipsis {
+    color: var(--gray-400);
+    font-size: 13px;
+    padding: 0 2px;
+  }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green);
+    color: var(--navy);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-400);
+  }
+
+  .empty .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty p { font-size: 14px; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">PRO 4A · CPPO 4A</div>
+  <h1>📋 Comment Copier</h1>
+  <p>Select a topic, then tap any comment to copy it instantly</p>
+</header>
+
+<div class="container">
+  <div class="select-wrapper">
+    <select id="topicSelect" onchange="loadComments()">
+      <option value="">— Choose a Topic —</option>
+      <option value="achievements">🏆 PNP Achievements</option>
+      <option value="goodDeeds">❤️ PNP Good Deeds</option>
+      <option value="communityReminders">📢 Community Reminders</option>
+      <option value="successfulOps">🚔 Successful Operations</option>
+      <option value="goodNews">📰 Good News</option>
+      <option value="pressBriefing">🎙️ Press Briefing</option>
+      <option value="awards">🎖️ PNP Awards</option>
+      <option value="congratulations">🎉 Congratulations</option>
+      <option value="flagRaising">🇵🇭 Flag Raising Ceremony</option>
+      <option value="mourning">🕊️ Mourning / Condolences</option>
+      <option value="cyberScam">🔐 Cyber Scam Reminders</option>
+    </select>
+  </div>
+
+  <div class="meta-row" id="metaRow" style="display:none;">
+    <div class="count-badge">Showing <span id="commentCount">0</span> comments <span id="pageInfo" class="page-info"></span></div>
+    <div class="hint">Tap a card to copy</div>
+  </div>
+
+  <div class="comments-list" id="commentsList">
+    <div class="empty">
+      <div class="icon">💬</div>
+      <p>Select a topic above to see all available comments</p>
+    </div>
+  </div>
+
+  <div class="pagination" id="pagination" style="display:none;"></div>
+</div>
+
+<div id="toast">✅ Copied to clipboard!</div>
+
+<script>
+const comments = {
+  achievements: [
+    "#pro4a #cppo4a This is what consistent hard work and dedication look like when they finally pay off. The PNP continues to prove that every effort made in the name of public safety is always worth it. Proud of our police force!",
+    "#pro4a #cppo4a Achievements like this do not come easy. They are the result of sleepless nights, sacrifice, and an unwavering commitment to serving every Filipino with excellence. Well done and congratulations, PNP!",
+    "#pro4a #cppo4a The PNP keeps raising the bar and delivering results that every Filipino can be proud of. This achievement is a testament to the quality of leadership and dedication within the organization. Mabuhay ang Bagong PNP!",
+    "#pro4a #cppo4a Every milestone achieved by the PNP is a milestone for every Filipino who believes in a safer and more peaceful Philippines. Keep pushing forward because the best is truly yet to come!",
+    "#pro4a #cppo4a Patuloy na nagpapatunay ang ating PNP na ang kahusayan at dedikasyon ay nagbubunga ng magandang resulta para sa bawat Pilipino. Ang tagumpay na ito ay tagumpay din nating lahat. Mabuhay!",
+    "#pro4a #cppo4a Behind this achievement are officers who showed up every single day and gave everything they had in service to the Filipino people. This one is for all of them. Well deserved and well earned!",
+    "#pro4a #cppo4a The PNP is not just meeting expectations. It is exceeding them. This achievement is proof that the transformation of our police force into a truly Bagong PNP is very much real and very much felt!",
+    "#pro4a #cppo4a Results like this remind every Filipino that their trust in the PNP is well placed. The organization continues to deliver meaningful achievements that make our communities safer and our lives better. Saludo!",
+    "#pro4a #cppo4a From the leadership down to every officer on the ground, this achievement belongs to the entire PNP family. Thank you for working as one team with one goal of serving and protecting every Filipino!",
+    "#pro4a #cppo4a Great things happen when discipline, dedication, and genuine love for the Filipino people come together. This achievement is living proof of that. Congratulations, PNP, and keep up the outstanding work!",
+    "#pro4a #cppo4a Another milestone achieved and another reason to be proud of our PNP! Every achievement is a reflection of the hard work, dedication, and professionalism of our men and women in uniform. Mabuhay ang PNP!",
+    "#pro4a #cppo4a This is what excellence in public service looks like! The PNP continues to raise the bar and prove that a Bagong PNP is truly being built for every Filipino. Congratulations on this well-deserved achievement!",
+    "#pro4a #cppo4a Achievements like this do not happen overnight. They are the result of countless hours of hard work, sacrifice, and unwavering commitment to serving the Filipino people. Well done, PNP!",
+    "#pro4a #cppo4a Every accomplishment of the PNP is a victory for every Filipino who believes in a safer and better Philippines. Congratulations and keep pushing forward. The best is yet to come!",
+    "#pro4a #cppo4a Proud does not even begin to cover it! The PNP continues to deliver results that matter and achievements that make every Filipino feel safer and more confident in their police force. Magaling!",
+    "#pro4a #cppo4a Ang tagumpay ng PNP ay tagumpay din ng bawat Pilipino. Patuloy na ipinapakita ng ating kapulisan na sila ay karapat-dapat sa ating tiwala at suporta. Mabuhay ang Bagong PNP para sa Bagong Pilipinas!",
+    "#pro4a #cppo4a From small wins to major milestones, every achievement of the PNP brings us one step closer to the safer and more peaceful Philippines we all deserve. Congratulations to our hardworking police force!",
+    "#pro4a #cppo4a Behind every achievement is a team of dedicated officers who gave their best without asking for anything in return. Thank you, PNP, for making every Filipino proud every single day!",
+    "#pro4a #cppo4a The numbers and results speak for themselves. The PNP is performing, delivering, and making a real difference in the lives of Filipinos across the country. Saludo sa ating mga pulis!",
+    "#pro4a #cppo4a This achievement is not just a statistic. It is a reminder that the PNP is on the right track and that every effort made in the name of public safety is worth it. Ipagpatuloy ang kahusayan!",
+    "#pro4a #cppo4a This kind of achievement does not happen by accident. It happens because of officers who choose excellence every single shift. Congratulations to everyone behind this milestone, and mabuhay ang PNP!",
+    "#pro4a #cppo4a Each award, each milestone, each headline like this is a small thank-you note from the universe for the long hours our police force puts in. Well deserved, PRO 4A!",
+    "#pro4a #cppo4a Ipinagmamalaki namin ang bawat tagumpay ng ating PNP dahil alam naming ito ay bunga ng tunay na pagmamahal sa bayan. Patuloy lang po, mga bayani naming nakauniporme!",
+    "#pro4a #cppo4a What looks like a single achievement on paper is really hundreds of small decisions made the right way, day after day. Salute to the PNP for staying the course!",
+    "#pro4a #cppo4a There is a quiet kind of pride that comes from watching your local police force keep getting better. This achievement is one more reason for that pride. Mabuhay, PRO 4A!",
+    "#pro4a #cppo4a Excellence is rarely loud. It is usually just someone doing the right thing one more time than they had to. That is exactly what this achievement represents. Congratulations, PNP!",
+    "#pro4a #cppo4a To everyone who worked behind the scenes on this, your effort did not go unnoticed. Thank you for representing the PNP with so much pride and professionalism!",
+    "#pro4a #cppo4a Hindi madali ang maabot ang antas ng tagumpay na ito, pero ipinakita ng ating mga pulis na posible ito kung may disiplina at pagmamahal sa trabaho. Saludo!",
+    "#pro4a #cppo4a It is achievements like this that remind every Filipino why trust in the PNP keeps growing. Keep raising the standard, and we will keep showing up to support you!",
+    "#pro4a #cppo4a A milestone like this is never just a number. It represents real effort, real sacrifice, and real impact on real communities. Proud of you, PRO 4A family!",
+    "#pro4a #cppo4a From training rooms to the field, this achievement reflects years of preparation finally meeting the right moment. Congratulations to everyone who made it possible!",
+    "#pro4a #cppo4a Bagong PNP nga talaga ito, kung saan ang bawat tagumpay ay pinaghirapan at hindi lang dumating nang bigla. Patuloy ninyong ipagmalaki ang badge na suot ninyo!",
+    "#pro4a #cppo4a It takes a special kind of discipline to keep delivering results like this year after year. Hats off to the PNP for never settling for just good enough!",
+    "#pro4a #cppo4a This achievement belongs to every officer who clocked in early, stayed late, and never once complained about the sacrifice. Thank you for your service, PNP!",
+    "#pro4a #cppo4a We do not always see the late nights and the missed family dinners behind a milestone like this, but we feel the results. Salamat at congratulations, PNP!",
+    "#pro4a #cppo4a There is something powerful about a police force that keeps exceeding its own bar. This achievement is proof that the Bagong PNP vision is alive and working!",
+    "#pro4a #cppo4a Every certificate, every recognition, every milestone is really just evidence of trust being earned the hard way. Well done to all involved in this achievement!",
+    "#pro4a #cppo4a Patunay na ang sipag at tiyaga ng ating kapulisan ay hindi kailanman nasasayang. Bawat tagumpay nila ay tagumpay din ng buong PRO 4A community. Mabuhay!",
+    "#pro4a #cppo4a This is the kind of news that makes scrolling through social media actually worth it. Congratulations to the PNP on this well-earned achievement!",
+    "#pro4a #cppo4a Achievements like this remind us that the people behind the badge are not just enforcing rules, they are building a better Philippines one milestone at a time."
+  ],
+
+  goodDeeds: [
+    "#pro4a #cppo4a This is the PNP that every Filipino deserves to see. Beyond the badge and the gun is a heart that genuinely cares for the people it serves. Thank you for this beautiful act of kindness and compassion!",
+    "#pro4a #cppo4a Acts of kindness like this remind us that our police officers are more than just law enforcers. They are neighbors, friends, and fellow Filipinos who truly care about the welfare of the community. Nakakaantig!",
+    "#pro4a #cppo4a The best police force is one that not only keeps communities safe but also lifts them up in times of need. The PNP continues to show that compassion and service go hand in hand. Proud of our police force!",
+    "#pro4a #cppo4a It does not take much to make a big difference in someone's life and the PNP knows this well. Thank you for going beyond the call of duty and showing every Filipino what genuine malasakit truly looks like!",
+    "#pro4a #cppo4a Ang serbisyo ng PNP ay hindi natatapos sa pagtatapos ng shift. Ito ay isang buong pusong pangako na araw at gabi ay inihahatid sa bawat Pilipinong nangangailangan. Salamat sa magandang halimbawa!",
+    "#pro4a #cppo4a Good deeds from our men and women in uniform always warm the heart and strengthen the bond between the PNP and the communities they serve. Keep shining that light of kindness wherever you go!",
+    "#pro4a #cppo4a Stories like this restore faith and remind us that there are still so many good people in uniform who genuinely want to make a difference. Thank you, PNP, for being that source of hope for so many Filipinos!",
+    "#pro4a #cppo4a A police force with a heart is a police force that truly serves. This act of kindness is a beautiful reminder that the PNP is not just here to enforce the law but to uplift and inspire the communities they protect!",
+    "#pro4a #cppo4a Behind every uniform is a person who chose to serve others before themselves. Acts like this remind us why we are proud and grateful to have the PNP looking out for every Filipino every single day!",
+    "#pro4a #cppo4a This is Serbisyong Nararamdaman in its purest and most genuine form. Not because it had to be done but because it came from the heart. Thank you, PNP, for always going the extra mile for our communities!",
+    "#pro4a #cppo4a This is the side of the PNP that reminds us why we are proud of our police force. Beyond enforcement, they show up with compassion and genuine care for every Filipino. Nakakaantig ng puso!",
+    "#pro4a #cppo4a A small act of kindness from our police force goes a long way in building trust and strengthening the bond between the PNP and the communities they serve. Thank you for this heartwarming gesture!",
+    "#pro4a #cppo4a The PNP proves once again that wearing a uniform is not just about authority. It is about service, compassion, and making a real difference in the lives of those who need it most!",
+    "#pro4a #cppo4a Ang pagtulong sa kapwa ay hindi lang tungkulin kundi puso rin ng ating PNP. Patuloy na ipinapakita ng ating mga pulis na ang serbisyo ay higit pa sa pagpapatupad ng batas. Salamat, PNP!",
+    "#pro4a #cppo4a It is always heartwarming to see our police officers go beyond their call of duty to help those in need. This is Serbisyong Nararamdaman at its most genuine and most beautiful!",
+    "#pro4a #cppo4a Good deeds from our men and women in uniform never go unnoticed. Thank you, PNP, for showing that kindness and compassion are just as important as courage and discipline!",
+    "#pro4a #cppo4a There is a special kind of warmth in seeing a police officer choose kindness even when no one is watching. Thank you for this beautiful reminder, PNP!",
+    "#pro4a #cppo4a Hindi laging baril at badge ang nakikita natin sa ating mga pulis, may pagmamahal din silang ibinabahagi sa kapwa. Salamat sa puso ninyong tulad nito!",
+    "#pro4a #cppo4a Small gestures like this carry a big message: that the people protecting us also genuinely care about us. Thank you for showing that side of the PNP!",
+    "#pro4a #cppo4a This is the kind of story that should trend more often. A uniform does not stop someone from having a kind heart, and this proves it beautifully!",
+    "#pro4a #cppo4a It is moments like these that turn strangers into family and duty into genuine care. Salute to the officer behind this act of kindness!",
+    "#pro4a #cppo4a Beyond the patrols and the paperwork is a person who still chooses to help, simply because it is the right thing to do. Thank you, PNP!",
+    "#pro4a #cppo4a Bawat magandang gawa ng ating pulis ay nagpapalakas ng tiwala ng komunidad. Patuloy ninyong ipakita ang tunay na kahulugan ng serbisyong may malasakit!",
+    "#pro4a #cppo4a This act of kindness will probably be forgotten by everyone except the person who received it, and that is exactly what makes it meaningful. Well done, PNP!",
+    "#pro4a #cppo4a A badge can demand respect, but it is moments of compassion like this that earn genuine love from the community. Thank you for leading with heart!",
+    "#pro4a #cppo4a We often talk about courage in uniform, but today let us talk about compassion in uniform. This is exactly the example we needed. Mabuhay, PNP!",
+    "#pro4a #cppo4a It is easy to walk past someone in need. It takes character to stop and help. Thank you to our officer for choosing the harder, better path!",
+    "#pro4a #cppo4a Ganito dapat palagi ang larawan ng ating PNP, may disiplina sa trabaho at may malasakit sa puso. Salamat sa pagpapaalala ng tunay na serbisyo!",
+    "#pro4a #cppo4a This story did not make the news because it was dramatic. It made the news because it was human. Thank you for reminding us of that, PNP!",
+    "#pro4a #cppo4a You never really know how far a small act of kindness can travel until you see how many people it touches. Beautiful work, PNP family!",
+    "#pro4a #cppo4a To the officer who took the time to help instead of just passing by, thank you. You represented the badge better than any medal ever could.",
+    "#pro4a #cppo4a There is no manual that requires this kind of kindness, which is exactly why it means so much when an officer goes the extra mile. Salute!",
+    "#pro4a #cppo4a Patunay na ang serbisyo ng PNP ay hindi lang nakasulat sa kasunduan, ito ay nararamdaman sa bawat pagtulong nila sa mga ordinaryong tao. Salamat po!",
+    "#pro4a #cppo4a This is the kind of content that restores faith in humanity, one small act at a time. Thank you, PNP, for sharing the good in our communities!",
+    "#pro4a #cppo4a A uniform with a kind heart inside it is the best combination any community could ask for. Proud to see this from our PRO 4A family!",
+    "#pro4a #cppo4a Stories like this are proof that protecting people and caring for people are never two separate jobs for the PNP. Thank you for showing us both!",
+    "#pro4a #cppo4a Kindness in uniform is still kindness, and today's act proved that compassion is part of the job description too. Thank you, PNP!",
+    "#pro4a #cppo4a This is the kind of moment that does not need a caption to explain why it matters. Well done, and thank you for caring beyond duty!",
+    "#pro4a #cppo4a Hindi lahat ng bayani ay sumasagip sa gitna ng krimen, may mga bayani rin na tumutulong sa simpleng pagiging mabait. Salamat, PNP!",
+    "#pro4a #cppo4a It is easy to enforce rules, but it takes a different kind of strength to also show up with compassion. Thank you for both, PNP!"
+  ],
+
+  communityReminders: [
+    "#pro4a #cppo4a Thank you, PNP, for always keeping our communities informed and aware. Reminders like this show that our police force is not just reactive but genuinely proactive in protecting every Filipino. Stay safe everyone!",
+    "#pro4a #cppo4a A well-informed community is always a safer community. Thank you, PNP, for taking the time to reach out and share these important reminders with the people you serve. We appreciate your continued dedication and malasakit!",
+    "#pro4a #cppo4a Public safety is a shared responsibility and the PNP is doing its part beautifully. Let us all take these reminders seriously and work together in building safer and more peaceful communities for our families!",
+    "#pro4a #cppo4a The PNP does not just patrol our streets. They also take the time to educate and inform our communities about staying safe. This kind of proactive engagement is exactly what builds lasting trust between police and community!",
+    "#pro4a #cppo4a Salamat sa patuloy na paalala ng ating PNP. Ang kaligtasan ng bawat Pilipino ay prayoridad nila at pinapatunayan ito sa bawat impormasyon at babala na ibinabahagi para sa kapakanan ng lahat!",
+    "#pro4a #cppo4a Reminders like this go a long way in keeping our communities safe and prepared. Thank you, PNP, for always thinking of the public first and for never missing an opportunity to keep every Filipino informed!",
+    "#pro4a #cppo4a Community safety starts with awareness and the PNP is making sure every Filipino has the information they need to stay safe. Let us all do our part by heeding these reminders and looking out for one another!",
+    "#pro4a #cppo4a The PNP's commitment to keeping communities informed is just as important as their operations on the ground. Thank you for this timely and valuable reminder. Safety truly is everyone's responsibility!",
+    "#pro4a #cppo4a It is always reassuring to see the PNP take the time to reach out and connect with the communities they serve. Reminders like this make every Filipino feel that their safety and welfare truly matter to our police force!",
+    "#pro4a #cppo4a This is community policing at its finest. The PNP does not just wait for problems to happen. They actively work to prevent them by keeping every Filipino informed, aware, and prepared. Salamat, PNP!",
+    "#pro4a #cppo4a Thank you, PNP, for always keeping the community informed and aware. These reminders go a long way in helping every Filipino stay safe and make better decisions for themselves and their families!",
+    "#pro4a #cppo4a Public safety is a shared responsibility and the PNP is doing its part by keeping us informed. Let us all do our part by staying alert, staying safe, and looking out for one another!",
+    "#pro4a #cppo4a Salamat sa patuloy na paalala ng ating PNP sa mga bagay na mahalaga para sa ating kaligtasan. Ang isang mulat na komunidad ay isang mas ligtas na komunidad. Sama-sama nating pangalagaan ang ating mga komunidad!",
+    "#pro4a #cppo4a Important reminder from our PNP! Let us all take this seriously and do our part in keeping our communities safe. Safety starts with awareness and awareness starts with reminders like this!",
+    "#pro4a #cppo4a This is the kind of community engagement that builds lasting trust between the PNP and the public. Thank you for always keeping us in the loop and for genuinely caring about our safety and well-being!",
+    "#pro4a #cppo4a A reminder like this might take thirty seconds to read but could save someone a much harder day later. Thank you for always thinking ahead, PNP!",
+    "#pro4a #cppo4a Salamat sa paalala, PNP! Mas madaling iwasan ang problema kaysa harapin ito, at ito ang dahilan kung bakit mahalaga ang ganitong post sa amin.",
+    "#pro4a #cppo4a The best kind of policing happens before anything goes wrong, and this reminder is a perfect example of that. Thank you for staying one step ahead!",
+    "#pro4a #cppo4a It is easy to scroll past safety reminders until the day you actually need one. Let us all take this seriously and share it with our loved ones!",
+    "#pro4a #cppo4a This is community policing done right: informing people before they become victims instead of only responding after. Salute to the PNP for this initiative!",
+    "#pro4a #cppo4a A community that listens to reminders like this is a community that protects itself better. Thank you, PNP, for never tiring of repeating what matters!",
+    "#pro4a #cppo4a Hindi tayo dapat maging kampante sa kaligtasan. Patuloy na paalala ng PNP ang nagpapanatili sa ating mga komunidad na mulat at handa. Salamat po!",
+    "#pro4a #cppo4a Reminders like this prove that the PNP's job does not end at the patrol car. It extends into every home that reads and heeds this advice!",
+    "#pro4a #cppo4a It only takes one shared post to prevent one bad situation, and that is exactly the kind of impact this reminder could have. Thank you, PNP!",
+    "#pro4a #cppo4a We appreciate reminders like this more than we probably show. Awareness saves lives quietly, long before any emergency call is ever made. Salamat, PNP!",
+    "#pro4a #cppo4a This is the kind of post worth screenshotting and sharing in family group chats. Thank you for keeping safety simple and easy to understand!",
+    "#pro4a #cppo4a Mahalagang malaman ng lahat ang ganitong impormasyon. Patuloy ninyong gawin ito, PNP, dahil ang kaalaman ay isa sa pinakamabisang sandata laban sa peligro!",
+    "#pro4a #cppo4a Public safety reminders rarely get the appreciation they deserve, but every single one counts. Thank you for never letting our guard down, PNP!",
+    "#pro4a #cppo4a This reminder is short but the impact it could have on someone's day, week, or even life is anything but small. Maraming salamat, PNP!",
+    "#pro4a #cppo4a It takes consistency to keep reminding the public about the same risks over and over, and we are grateful the PNP never gets tired of doing it!",
+    "#pro4a #cppo4a Some of the best protection comes not from a response team but from information shared early. Thank you, PNP, for prioritizing prevention like this!",
+    "#pro4a #cppo4a Salamat sa pag-aalala ng PNP sa kapakanan ng mga ordinaryong mamamayan. Ang ganitong klaseng serbisyo ay hindi laging napapansin pero lagi namang pinahahalagahan!",
+    "#pro4a #cppo4a A well-timed reminder can be the difference between a close call and a tragedy. Thank you for always choosing to speak up before it is too late!",
+    "#pro4a #cppo4a This is proof that the PNP cares about prevention just as much as response. Thank you for treating public awareness as seriously as public safety!",
+    "#pro4a #cppo4a We will keep sharing reminders like this because one post could reach exactly the person who needed to see it today. Salamat, PNP!",
+    "#pro4a #cppo4a A reminder shared today could be the difference between a safe tomorrow and a regretful one. Thank you for never holding back this information!",
+    "#pro4a #cppo4a Patuloy ninyong ipaalala sa amin ang mga bagay na ito, dahil ang kamalayan ng publiko ay nagsisimula sa simpleng post na tulad nito. Salamat!",
+    "#pro4a #cppo4a This is proactive policing in its purest form, reaching people before trouble does. Thank you, PNP, for always thinking one step ahead!",
+    "#pro4a #cppo4a We may not always comment, but we are reading, sharing, and applying these reminders. Thank you, PNP, for the continued public service!",
+    "#pro4a #cppo4a Hindi sapat ang pagiging alerto kung walang gabay, at ito mismo ang ibinibigay ng PNP sa bawat paalala nila. Maraming salamat po!"
+  ],
+
+  successfulOps: [
+    "#pro4a #cppo4a Another clean and successful operation that shows the PNP means business when it comes to keeping our communities safe. Congratulations to all the officers involved. Your hard work and bravery are truly appreciated!",
+    "#pro4a #cppo4a This is what smart, coordinated, and professional police work looks like. The PNP continues to deliver results that matter and operations that make every Filipino feel safer in their own communities. Well done!",
+    "#pro4a #cppo4a The criminals never stood a chance against a well-prepared and fully coordinated PNP team. Congratulations on another successful operation and thank you for putting yourselves on the line for the safety of every Filipino!",
+    "#pro4a #cppo4a From intelligence gathering to actual arrest, the PNP executed this operation with precision, professionalism, and full respect for the rule of law. This is the standard every police operation should be held to. Magaling!",
+    "#pro4a #cppo4a Bawat matagumpay na operasyon ay nagbibigay ng kumpiyansa sa mga Pilipino na ang PNP ay laging handa at laging nagbabantay para sa kanilang kaligtasan. Saludo sa lahat ng tauhan na bahagi ng tagumpay na ito!",
+    "#pro4a #cppo4a Operations like this remind us that the PNP is always working behind the scenes to keep us safe. Not every effort makes the headlines but every effort makes a difference. Thank you for your service and sacrifice!",
+    "#pro4a #cppo4a The success of this operation is a direct result of teamwork, dedication, and the kind of relentless determination that defines our PNP. Congratulations to everyone involved and keep up the outstanding police work!",
+    "#pro4a #cppo4a Swift action, proper procedures, and full accountability. That is how the PNP rolls in every operation it conducts. Congratulations on this latest success and thank you for keeping our communities safe and secure!",
+    "#pro4a #cppo4a Every successful operation brings justice closer to those who deserve it and safety closer to the communities that need it. Thank you, PNP, for never letting up in the fight against crime and lawlessness!",
+    "#pro4a #cppo4a The PNP continues to show that no criminal activity is beyond its reach. This successful operation is yet another proof that our police force is capable, committed, and always ready to deliver justice for every Filipino!",
+    "#pro4a #cppo4a Another successful operation in the books! The PNP continues to deliver swift, decisive, and professional law enforcement that every Filipino can be proud of. Great job to all the units involved!",
+    "#pro4a #cppo4a This is what happens when intelligence, coordination, and determination come together. A clean, successful, and by-the-book operation that serves justice and keeps our communities safe. Well done, PNP!",
+    "#pro4a #cppo4a Swift, professional, and effective. That is how the PNP gets things done. Congratulations to all the officers involved in this successful operation. Your dedication to duty is truly inspiring!",
+    "#pro4a #cppo4a Bawat matagumpay na operasyon ay paalala sa lahat na ang PNP ay laging handa, laging alerto, at laging nakatuon sa pagtataguyod ng hustisya para sa bawat Pilipino. Magaling at mabuhay ang PNP!",
+    "#pro4a #cppo4a The PNP's track record of successful operations speaks volumes about the quality, dedication, and professionalism of our police force. Saludo sa lahat ng mga tauhan na bahagi ng tagumpay na ito!",
+    "#pro4a #cppo4a Behind every successful operation is a team that trained for moments most people never see. Congratulations to all involved, and thank you for your service!",
+    "#pro4a #cppo4a Bawat matagumpay na operasyon ay nagpapatibay ng paniniwala namin na ligtas kami sa kamay ng PNP. Saludo sa lahat ng bahagi ng tagumpay na ito!",
+    "#pro4a #cppo4a This operation is a textbook example of preparation meeting precision. Well done to every officer who made sure this was carried out safely and lawfully!",
+    "#pro4a #cppo4a Operations like this rarely make it into a highlight reel, but they make a real difference in keeping our streets safer. Thank you, PNP!",
+    "#pro4a #cppo4a It takes coordination, courage, and discipline to pull off an operation like this cleanly. Congratulations to the entire team behind this success!",
+    "#pro4a #cppo4a This success did not happen overnight. It is the result of intelligence work, patience, and split-second decisions made the right way. Magaling, PNP!",
+    "#pro4a #cppo4a Every operation that ends safely and lawfully is a win not just for the PNP, but for every community that now sleeps a little easier. Salute!",
+    "#pro4a #cppo4a Patuloy na pinapatunayan ng PNP na hindi nasasayang ang oras at pagod na inilagay sa bawat operasyon. Salamat sa inyong tapang at determinasyon!",
+    "#pro4a #cppo4a From planning to execution, this operation shows exactly what professional law enforcement should look like. Congratulations to everyone involved!",
+    "#pro4a #cppo4a Operations like this remind us that safety is not accidental. It is the product of officers who train hard and act smart. Well done, PNP!",
+    "#pro4a #cppo4a There is real risk behind every operation like this, and real courage in choosing to act anyway. Thank you for keeping our communities protected!",
+    "#pro4a #cppo4a This is what accountability and effectiveness look like working hand in hand. Congratulations to the PNP for another well-executed operation!",
+    "#pro4a #cppo4a Saludo kami sa bawat pulis na bahagi ng operasyong ito. Alam naming may panganib sa trabahong ito pero hindi kayo umurong. Maraming salamat!",
+    "#pro4a #cppo4a A clean, lawful, and effective operation like this is exactly the standard every Filipino hopes to see from their police force. Proud of you, PNP!",
+    "#pro4a #cppo4a It is easy to take safety for granted until you see the work that goes into operations like this. Thank you for the sacrifice and dedication!",
+    "#pro4a #cppo4a This operation reflects months, maybe years, of groundwork finally paying off in a single decisive moment. Congratulations to the entire unit!",
+    "#pro4a #cppo4a We may never know every detail of how this operation came together, but we know the result: a safer community. Thank you, PNP!",
+    "#pro4a #cppo4a Operations like this are proof that crime does not get the final say when there is a capable and committed police force on watch. Mabuhay!",
+    "#pro4a #cppo4a To every officer who put themselves on the line during this operation, your bravery is seen and deeply appreciated. Thank you for your service!",
+    "#pro4a #cppo4a This kind of success reinforces exactly why public trust in the PNP continues to grow. Congratulations on another job well done!",
+    "#pro4a #cppo4a Operations like this are won long before the actual moment, through preparation that the public rarely gets to witness. Congratulations, PNP!",
+    "#pro4a #cppo4a It is reassuring to know that behind the scenes, there is a team this capable working to keep our streets safe. Thank you, PNP!",
+    "#pro4a #cppo4a Patunay na ang bawat tagumpay ng PNP ay resulta ng tunay na disiplina at determinasyon. Saludo sa lahat ng kasangkot sa operasyong ito!",
+    "#pro4a #cppo4a This is what happens when training, intelligence, and courage come together in one decisive moment. Congratulations to the whole team!",
+    "#pro4a #cppo4a To every officer who answered the call for this operation, thank you for your bravery and for keeping our communities a little bit safer today!"
+  ],
+
+  goodNews: [
+    "#pro4a #cppo4a This is exactly the kind of news that starts our day right! The PNP keeps on delivering positive results that give every Filipino reason to be hopeful and proud of their police force. Mabuhay ang PNP!",
+    "#pro4a #cppo4a Good news from the PNP always puts a smile on our faces and warmth in our hearts. Thank you for consistently delivering results that truly matter to the communities you serve. Keep up the great work!",
+    "#pro4a #cppo4a Behind every good news from the PNP is a team of dedicated officers who worked hard and sacrificed much to make it happen. We see your efforts and we are truly grateful for everything you do for us!",
+    "#pro4a #cppo4a Progress is real and it is being felt across every community in the Philippines. Good news like this is a reminder that the PNP is on the right track and that better and safer days are ahead for all of us!",
+    "#pro4a #cppo4a Nakakatuwa at nakakaproud ang mga ganitong balita mula sa ating PNP! Patuloy nilang pinapatunayan na ang Bagong PNP para sa Bagong Pilipinas ay hindi lang isang pangako kundi isang katotohanang nararamdaman!",
+    "#pro4a #cppo4a Every piece of good news from the PNP is a reminder that our men and women in uniform are working tirelessly every day to deliver meaningful results for every Filipino. Thank you and please keep going!",
+    "#pro4a #cppo4a The PNP never runs out of reasons to make us proud and today is no exception. Good news like this fuels our confidence and trust in our police force. This is Serbisyong Tapat at Nararamdaman in action!",
+    "#pro4a #cppo4a We love waking up to good news from the PNP! Every positive development is proof that the hard work and dedication of our police force is paying off in real and meaningful ways for our communities!",
+    "#pro4a #cppo4a Good news travels fast and this one deserves to be shared far and wide! The PNP continues to make its mark as a police force that delivers results, earns trust, and makes every Filipino feel protected and valued!",
+    "#pro4a #cppo4a This is the news our communities need to hear. The PNP is making progress, delivering results, and proving every single day that a Bagong PNP is not just possible but is already happening. Mabuhay!",
+    "#pro4a #cppo4a This is exactly the kind of good news that every Filipino needs to hear! The PNP continues to make real and meaningful progress in building a safer and better Philippines. Keep it up!",
+    "#pro4a #cppo4a Good news like this keeps our faith strong in the PNP and in the promise of a safer Philippines. Thank you for consistently delivering results that make a real difference in our communities!",
+    "#pro4a #cppo4a Magandang balita mula sa ating PNP! Patuloy nilang pinapatunayan na ang Serbisyong Tapat at Nararamdaman ay hindi lang salita kundi isang pangakong tinutupad araw at gabi para sa bawat Pilipino!",
+    "#pro4a #cppo4a Good news from the PNP always reminds us that there are dedicated people working tirelessly to keep us safe and make our communities better. Thank you, PNP, for never stopping and never giving up!",
+    "#pro4a #cppo4a The PNP never runs out of reasons to make us proud! Good news like this is a reminder that our police force is on the right path and that better and safer days are ahead for every Filipino!",
+    "#pro4a #cppo4a Some days call for good news, and the PNP delivered exactly that today. Thank you for giving us a reason to smile this week!",
+    "#pro4a #cppo4a Magandang balita talaga ito mula sa ating PNP. Patunay na ang sipag at determinasyon ay laging may magandang kahihinatnan. Mabuhay ang PNP!",
+    "#pro4a #cppo4a Good news like this is a small reminder that progress is happening even when it does not always make the front page. Thank you, PNP!",
+    "#pro4a #cppo4a There is something refreshing about good news from law enforcement, especially in a world that often only highlights the negative. Salamat, PNP!",
+    "#pro4a #cppo4a This kind of update reminds us that our police force is not just fighting crime, it is also building hope. Thank you for sharing this!",
+    "#pro4a #cppo4a Good news from the PNP always feels earned, never given. Thank you for continuing to show that hard work really does pay off!",
+    "#pro4a #cppo4a Bukod sa kanilang serbisyo, alam din ng PNP na ang pagbabahagi ng magandang balita ay nagpapalakas ng loob ng mga Pilipino. Salamat sa pag-uupdate!",
+    "#pro4a #cppo4a It is good news like this that keeps faith in our institutions alive. Thank you, PNP, for proving progress is possible and already happening!",
+    "#pro4a #cppo4a We do not always get to celebrate wins publicly, so thank you for sharing this one with all of us. Mabuhay ang PNP family!",
+    "#pro4a #cppo4a This is exactly the kind of update that deserves more shares than the bad news ever gets. Congratulations and thank you, PNP!",
+    "#pro4a #cppo4a Good news travels faster when it comes from a source people trust, and the PNP continues to earn that trust one update at a time!",
+    "#pro4a #cppo4a Salamat sa pagbabahagi ng magandang balita. Kailangan natin ito bilang paalala na may pag-asa pa rin sa kabila ng mga hamon ng bawat araw!",
+    "#pro4a #cppo4a This update made our day a little brighter, and we know it took real effort behind the scenes to make it happen. Thank you, PNP!",
+    "#pro4a #cppo4a Good news like this proves that the small, quiet victories matter just as much as the big headline-grabbing ones. Mabuhay, PRO 4A!",
+    "#pro4a #cppo4a It is news like this that reminds every Filipino why supporting our local police force is always worth it. Thank you for the update!",
+    "#pro4a #cppo4a We appreciate that the PNP takes the time to share wins, not just challenges. It keeps the relationship between police and public balanced and honest!",
+    "#pro4a #cppo4a Magandang araw ito dahil sa balitang ito mula sa ating PNP. Patuloy lang kayo sa pagsusumikap, dahil napapansin at pinahahalagahan namin ito!",
+    "#pro4a #cppo4a This good news is a small but meaningful reminder that the efforts of our police force are paying off in ways that matter. Salamat, PNP!",
+    "#pro4a #cppo4a There is nothing like good news from your local police force to restore a bit of optimism in your day. Thank you for sharing this!",
+    "#pro4a #cppo4a Every bit of good news shared by the PNP adds up to a much bigger story about progress, trust, and hope. Mabuhay ang Bagong PNP!",
+    "#pro4a #cppo4a It is good news like this that makes us want to keep believing in better days ahead for our communities. Thank you, PNP, for sharing!",
+    "#pro4a #cppo4a Salamat sa balitang ito! Kailangan namin ng paalala na may pag-unlad pa rin sa kabila ng mga pagsubok na kinakaharap araw-araw. Mabuhay!",
+    "#pro4a #cppo4a This update is proof that the small wins really do add up to something meaningful over time. Thank you for sharing the good with us, PNP!",
+    "#pro4a #cppo4a There is no such thing as too much good news, especially when it comes from a police force working this hard. Congratulations and thank you!",
+    "#pro4a #cppo4a Good news like this deserves to spread just as fast, if not faster, than anything negative ever could. Mabuhay ang PNP for sharing this update!"
+  ],
+
+  pressBriefing: [
+    "#pro4a #cppo4a Transparency is the foundation of public trust and the PNP continues to build that trust one press briefing at a time. Thank you for keeping every Filipino informed and for always being open and accountable to the public!",
+    "#pro4a #cppo4a A police force that communicates openly with the public is a police force worthy of confidence and trust. Kudos to the PNP for consistently holding press briefings and keeping every Filipino in the loop!",
+    "#pro4a #cppo4a The PNP's commitment to transparency is evident in every press briefing it holds. No hiding, no sugarcoating, just honest and straightforward updates for the Filipino people. This is the kind of accountability we deserve!",
+    "#pro4a #cppo4a Keeping the public informed is just as important as keeping the public safe. The PNP understands this well and continues to deliver timely and relevant updates through its press briefings. Salamat sa transparency, PNP!",
+    "#pro4a #cppo4a Ang isang organisasyong bukas sa publiko ay isang organisasyong karapat-dapat pagkatiwalaan. Patuloy na ipinapakita ng PNP sa bawat press briefing na sila ay may pananagutan sa bawat Pilipinong kanilang pinaglilingkuran!",
+    "#pro4a #cppo4a Press briefings like this show that the PNP has nothing to hide and everything to share with the Filipino public. This level of openness and accountability is exactly what a Bagong PNP stands for. Well done!",
+    "#pro4a #cppo4a Thank you, PNP, for taking the time to brief the public and address concerns in a clear and transparent manner. An informed public is an empowered public and the PNP clearly understands the value of that!",
+    "#pro4a #cppo4a Every press briefing from the PNP is a reminder that our police force operates with openness, honesty, and full respect for the public's right to be informed. This is responsible and principled leadership in action!",
+    "#pro4a #cppo4a Transparency builds trust and the PNP is doing exactly that through consistent and informative press briefings. Keep the communication lines open because every Filipino deserves to know what is happening in their communities!",
+    "#pro4a #cppo4a The PNP's willingness to face the media and answer questions openly says a lot about the kind of institution it is becoming. Honest, accountable, and genuinely committed to serving and informing every Filipino. Mabuhay!",
+    "#pro4a #cppo4a Press briefings like this remind the public that the PNP has nothing to fear from honest, open conversation. Thank you for the transparency!",
+    "#pro4a #cppo4a Salamat sa malinaw na paliwanag sa press briefing. Mahalaga ito para sa amin bilang mamamayan na nais maging updated sa mga nangyayari!",
+    "#pro4a #cppo4a It is reassuring to see the PNP face questions directly instead of avoiding them. This kind of openness builds real, lasting public trust!",
+    "#pro4a #cppo4a A press briefing done well is more than information sharing, it is a public promise to remain accountable. Thank you for upholding that standard!",
+    "#pro4a #cppo4a We appreciate briefings like this because they treat the public as partners who deserve clarity, not bystanders left in the dark. Salamat, PNP!",
+    "#pro4a #cppo4a This press briefing shows that the PNP understands a simple truth: trust is built through communication, not silence. Well done!",
+    "#pro4a #cppo4a Patuloy na ipinapakita ng PNP sa bawat press briefing ang kanilang pagiging bukas sa publiko. Salamat sa pananagutan at transparency!",
+    "#pro4a #cppo4a Briefings like this matter because they give the public facts instead of speculation. Thank you for keeping the narrative honest and clear!",
+    "#pro4a #cppo4a It takes confidence to stand in front of the media and answer hard questions honestly. The PNP continues to show exactly that confidence!",
+    "#pro4a #cppo4a This is exactly the kind of communication that strengthens the relationship between law enforcement and the communities they serve. Thank you, PNP!",
+    "#pro4a #cppo4a Every press briefing is a small but important reminder that the PNP answers to the public, not the other way around. Salute to that accountability!",
+    "#pro4a #cppo4a Salamat sa pagbibigay-linaw sa mga isyu. Mas gumaganda ang tiwala ng publiko kapag bukas at malinaw ang komunikasyon mula sa PNP!",
+    "#pro4a #cppo4a We do not always get straightforward answers from institutions, which is why briefings like this from the PNP deserve real appreciation. Thank you!",
+    "#pro4a #cppo4a This briefing reflects an organization that is not afraid of scrutiny because it knows it has done the work to back up its statements!",
+    "#pro4a #cppo4a Thank you for treating the press, and by extension the public, with the respect of a clear and honest update. This is leadership in action!",
+    "#pro4a #cppo4a Ang transparency na ipinapakita sa bawat press briefing ay isa sa mga dahilan kung bakit lumalago ang tiwala ng publiko sa ating kapulisan!",
+    "#pro4a #cppo4a It is briefings like this that quietly do the work of building credibility, one honest answer at a time. Thank you, PNP, for the consistency!",
+    "#pro4a #cppo4a This kind of openness should be the standard for every public institution, and the PNP continues to set a great example. Mabuhay!",
+    "#pro4a #cppo4a We appreciate that the PNP does not wait to be asked before sharing important updates. Proactive transparency like this deserves recognition!",
+    "#pro4a #cppo4a Thank you for another clear and informative briefing. The public deserves facts, and the PNP continues to deliver exactly that. Salamat po!",
+    "#pro4a #cppo4a This is exactly the kind of communication that should be the standard, not the exception. Thank you for treating transparency seriously, PNP!",
+    "#pro4a #cppo4a Salamat sa malinaw na pagbabahagi ng impormasyon. Kailangan namin ng katotohanan, hindi alingawngaw, at ito mismo ang ibinigay ng briefing na ito!",
+    "#pro4a #cppo4a It says a lot about an institution when it is willing to answer hard questions directly. Thank you, PNP, for showing that kind of confidence!",
+    "#pro4a #cppo4a This briefing reflects discipline not just in the field but also in how the PNP chooses to communicate with the public. Well done!",
+    "#pro4a #cppo4a We appreciate that the PNP treats the public's right to information as a priority, not an afterthought. Thank you for this clear briefing!",
+    "#pro4a #cppo4a Every honest briefing like this chips away at doubt and builds something far more valuable: trust. Thank you, PNP, for the transparency!",
+    "#pro4a #cppo4a Patuloy ninyong ipagpatuloy ang ganitong klaseng openness, dahil ito ang nagpapalakas ng tiwala ng publiko sa ating institusyon. Salamat po!",
+    "#pro4a #cppo4a This is what responsible communication looks like: facts first, clarity always, and accountability without hesitation. Thank you, PNP!",
+    "#pro4a #cppo4a Thank you for facing tough questions with calm, clear answers. That kind of composure under scrutiny says a lot about real leadership!",
+    "#pro4a #cppo4a Briefings like this remind us that good communication is also a form of public service. Thank you, PNP, for never underestimating that!"
+  ],
+
+  awards: [
+    "#pro4a #cppo4a Every award given to our police personnel is a recognition of the sacrifices made and the extra miles gone in service to the Filipino people. Congratulations to all the awardees and thank you for setting such a high standard!",
+    "#pro4a #cppo4a Awards like these remind us that excellence and dedication never go unnoticed in the PNP. Congratulations to all the deserving recipients and may this recognition inspire even greater achievements in the days to come!",
+    "#pro4a #cppo4a Nothing beats seeing our hardworking police personnel receive the recognition they truly deserve. Congratulations to all the awardees! Your commitment to excellence and public service is truly commendable and deeply appreciated!",
+    "#pro4a #cppo4a Behind every award is a story of hard work, sacrifice, and genuine dedication to serving the Filipino people. Congratulations to all the recipients and to the PNP for fostering a culture of excellence and recognition!",
+    "#pro4a #cppo4a Ang bawat parangal na ibinibigay sa ating mga pulis ay patunay na ang kanilang mga sakripisyo at dedikasyon ay hindi napapansin. Congratulations sa lahat ng mga nagwagi at patuloy na maglingkod nang may kahusayan!",
+    "#pro4a #cppo4a A culture of recognition is a culture of excellence and the PNP continues to nurture that culture through meaningful awards and acknowledgments. Congratulations to all the awardees who have gone above and beyond in their service!",
+    "#pro4a #cppo4a When good work gets recognized it inspires even better work. Congratulations to all the PNP awardees today! Your dedication and excellence set the bar for everyone in the organization and we could not be more proud!",
+    "#pro4a #cppo4a These awards represent more than just accomplishments. They represent lives protected, communities served, and a police force that genuinely cares. Congratulations to all the well-deserving recipients of today's recognition!",
+    "#pro4a #cppo4a It is always heartwarming to see the PNP pause and celebrate the people who make the organization great. Congratulations to all the awardees! You are the backbone of the Bagong PNP and you deserve every bit of this recognition!",
+    "#pro4a #cppo4a Recognition fuels motivation and motivation drives excellence. Congratulations to all the PNP personnel honored today! May your achievements inspire your colleagues and may you continue to serve with the same passion and dedication!",
+    "#pro4a #cppo4a Awards like this are proof that hard work in uniform does not go unnoticed, even on the days that feel thankless. Congratulations to all!",
+    "#pro4a #cppo4a Salamat sa pagkilala sa mga sakripisyo ng ating mga kapulisan. Karapat-dapat sila sa parangal na ito at sa suporta ng buong PRO 4A family!",
+    "#pro4a #cppo4a There is something special about watching dedication get the recognition it deserves. Congratulations to every awardee honored today!",
+    "#pro4a #cppo4a This award is not just a certificate, it is a public acknowledgment of countless hours that often go unseen. Well deserved, and congratulations!",
+    "#pro4a #cppo4a To every officer recognized today, your consistency and commitment did not go unnoticed. The entire PRO 4A family celebrates with you!",
+    "#pro4a #cppo4a Recognition like this reminds the rest of the force that excellence is noticed, valued, and worth striving for every single day. Congratulations!",
+    "#pro4a #cppo4a Ang parangal na ito ay patunay na sa PNP, ang tunay na sipag at dedikasyon ay may katumbas na pagkilala. Saludo sa lahat ng nagwagi!",
+    "#pro4a #cppo4a Every award given today represents a story of perseverance that the public rarely gets to see in full. Congratulations to all the honorees!",
+    "#pro4a #cppo4a This is exactly the kind of recognition that keeps morale high and motivation strong across the entire organization. Well deserved, PNP!",
+    "#pro4a #cppo4a Behind every medal is a person who showed up, did the hard thing, and never expected applause for it. Congratulations to all the awardees!",
+    "#pro4a #cppo4a Awards like this are reminders that the PNP values its people, not just its operations. Congratulations to everyone honored today!",
+    "#pro4a #cppo4a Patuloy ninyong ipagpatuloy ang inspirasyong dulot ng parangal na ito sa ibang kasamahan. Congratulations sa lahat ng karangalang natanggap!",
+    "#pro4a #cppo4a This recognition reflects years of integrity and service that deserve far more than a single ceremony can ever fully capture. Congratulations!",
+    "#pro4a #cppo4a To the families of every awardee, thank you for supporting the long hours and sacrifices that led to this well-earned recognition today!",
+    "#pro4a #cppo4a Excellence deserves to be celebrated, and today the PNP is doing exactly that. Congratulations to everyone receiving recognition this time!",
+    "#pro4a #cppo4a It is moments like these that remind the entire force why showing up with integrity every single day truly matters. Congratulations, PNP!",
+    "#pro4a #cppo4a Ang bawat parangal ay hindi lang tungkol sa indibidwal, ito ay tungkol din sa buong organisasyong nagtuturo ng kahusayan. Congratulations po!",
+    "#pro4a #cppo4a This award ceremony is proof that the PNP knows how to balance discipline with genuine appreciation for its people. Well deserved, all!",
+    "#pro4a #cppo4a Congratulations to today's awardees. May this recognition fuel even more dedication in the months and years of service still ahead!",
+    "#pro4a #cppo4a Recognition like this does more than honor the past, it inspires the future of the entire organization. Congratulations to all the honorees!",
+    "#pro4a #cppo4a Congratulations to every awardee today. May this recognition be just the beginning of even greater contributions to public service ahead!",
+    "#pro4a #cppo4a Salamat sa pagbigay-pansin sa mga taong patuloy na gumagawa ng tama kahit walang nakatingin. Karapat-dapat sila sa parangal na ito!",
+    "#pro4a #cppo4a This recognition reminds the entire force that integrity and consistency are always noticed eventually. Congratulations to all the honorees!",
+    "#pro4a #cppo4a To everyone honored today, your dedication has clearly inspired more than just your immediate team. Congratulations on this well-earned recognition!",
+    "#pro4a #cppo4a Awards like this matter because they tell every young officer watching that excellence is always worth striving for. Congratulations, PNP!",
+    "#pro4a #cppo4a It is encouraging to see an organization that takes the time to celebrate its people, not just its statistics. Congratulations to today's awardees!",
+    "#pro4a #cppo4a Patuloy ninyong dalhin ang dangal ng PNP sa pamamagitan ng inyong serbisyo. Congratulations sa lahat ng nakatanggap ng parangal ngayon!",
+    "#pro4a #cppo4a This award ceremony reflects years of consistent effort finally being acknowledged in front of the people who matter most. Well deserved!",
+    "#pro4a #cppo4a Congratulations to all the honorees today. Your commitment to service has not gone unnoticed, and we are proud to celebrate with you!",
+    "#pro4a #cppo4a Recognition like this strengthens not just morale but also public confidence in the people wearing the uniform. Congratulations to all the awardees!"
+  ],
+
+  congratulations: [
+    "#pro4a #cppo4a Congratulations on this well-deserved milestone! The road to this achievement was not easy but your hard work, perseverance, and dedication made it all possible. The PNP family and the entire nation are proud of you!",
+    "#pro4a #cppo4a This is a moment worth celebrating! Congratulations and may this achievement be the stepping stone to even greater things ahead in your journey of service to the Filipino people. Mabuhay at ipagpatuloy ang kahusayan!",
+    "#pro4a #cppo4a Congratulations! Behind this success is a story of sacrifice, hard work, and an unwavering commitment to serving with excellence. You have earned every bit of this recognition and we could not be prouder!",
+    "#pro4a #cppo4a A well-deserved congratulations to everyone being recognized today! Your achievement is not just a personal victory but a source of inspiration for the entire PNP family and the communities you faithfully serve!",
+    "#pro4a #cppo4a Congratulations sa lahat ng kinikilala ngayon! Ang inyong tagumpay ay bunga ng inyong tiyaga, sakripisyo, at tunay na pagmamahal sa serbisyo. Patuloy na maglingkod nang may kahusayan at integridad para sa bawat Pilipino!",
+    "#pro4a #cppo4a Congratulations on reaching this important milestone! May this achievement fuel your passion for service even further and inspire everyone around you to strive for the same level of excellence and dedication. Well done!",
+    "#pro4a #cppo4a To all being congratulated today, know that your hard work has not gone unnoticed. The PNP family celebrates your achievement and looks forward to seeing even greater things from you in the years ahead. Mabuhay!",
+    "#pro4a #cppo4a Congratulations! This is what happens when talent meets hard work and dedication meets opportunity. You have made your families, your colleagues, and the entire PNP family proud. Keep shining and keep serving!",
+    "#pro4a #cppo4a Every congratulation given today is backed by years of hard work and genuine commitment to public service. Well done to all the awardees and achievers! The best chapter of your service story is still yet to be written!",
+    "#pro4a #cppo4a Congratulations on this incredible achievement! Let this milestone serve as a reminder that dedication, integrity, and love for the Filipino people always lead to great things. The PNP is proud to have you in its ranks!",
+    "#pro4a #cppo4a Congratulations on this achievement! May it be the first of many more milestones still waiting for you on this journey of service.",
+    "#pro4a #cppo4a Ang tagumpay mo ngayon ay bunga ng iyong tiyaga noon. Congratulations at sana ay maging inspirasyon ka sa mga kasamahan mo sa PNP!",
+    "#pro4a #cppo4a This milestone is a beautiful reminder of what consistency and patience can build over time. Congratulations, and well deserved!",
+    "#pro4a #cppo4a To everyone celebrating today, your hard work clearly did not go to waste. Congratulations on this achievement and on everything still to come!",
+    "#pro4a #cppo4a This is more than just a milestone, it is proof that showing up every day with the right attitude eventually pays off. Congratulations!",
+    "#pro4a #cppo4a Congratulations on reaching this point! May the road ahead be filled with even more growth, purpose, and meaningful service to our people.",
+    "#pro4a #cppo4a Patuloy ninyong dalhin ang parangal na ito bilang inspirasyon sa pagpapatuloy ng serbisyo. Congratulations sa lahat ng karangalan ngayon!",
+    "#pro4a #cppo4a This achievement is the kind that families remember for years, not just the person who earned it. Congratulations to you and your loved ones!",
+    "#pro4a #cppo4a Congratulations on this well-earned milestone! The PNP family is proud, and we know this is only the beginning of greater things ahead.",
+    "#pro4a #cppo4a To everyone marking this milestone today, thank you for representing the best of what dedicated public service can look like. Congratulations!",
+    "#pro4a #cppo4a This kind of achievement reminds everyone watching that effort eventually finds its reward. Congratulations, and continued success ahead!",
+    "#pro4a #cppo4a Congratulations sa inyong tagumpay! Patunay ito na ang totoong pagsisikap ay hindi kailanman nasasayang. Ipagpatuloy ang kahusayan!",
+    "#pro4a #cppo4a This moment deserves to be celebrated loudly because it represents quiet sacrifices made over a long period of time. Congratulations!",
+    "#pro4a #cppo4a Congratulations on this achievement! May it remind you, and everyone watching, that consistency really is the foundation of every success.",
+    "#pro4a #cppo4a To everyone being recognized today, you have earned every bit of this celebration. Congratulations and continued blessings ahead!",
+    "#pro4a #cppo4a This achievement is proof that doing the right thing consistently eventually leads to recognition. Congratulations and well done!",
+    "#pro4a #cppo4a Congratulations! This milestone is a powerful reminder that service rooted in integrity always finds its way to meaningful recognition.",
+    "#pro4a #cppo4a Ang tagumpay na ito ay para sa lahat ng sakripisyong ginawa upang maabot ito. Congratulations at mabuhay ang inyong dedikasyon sa serbisyo!",
+    "#pro4a #cppo4a Congratulations on this achievement! May this be a stepping stone toward even bigger milestones in your continued service to the nation.",
+    "#pro4a #cppo4a This kind of success rarely comes easy, which makes today's celebration even more meaningful. Congratulations to everyone being honored!",
+    "#pro4a #cppo4a Congratulations on this achievement! It is proof that consistency, patience, and integrity always eventually find their reward in service.",
+    "#pro4a #cppo4a Ang tagumpay na ito ay karapat-dapat ipagdiwang nang buong puso. Congratulations at patuloy ninyong dalhin ang dedikasyong ito sa hinaharap!",
+    "#pro4a #cppo4a To everyone marking a milestone today, thank you for showing what dedicated public service really looks like. Congratulations and well deserved!",
+    "#pro4a #cppo4a Congratulations on this well-earned recognition! May it serve as motivation for everyone still working toward their own meaningful milestones.",
+    "#pro4a #cppo4a This achievement reflects not just talent but also years of quiet discipline behind the scenes. Congratulations to everyone being celebrated today!",
+    "#pro4a #cppo4a Congratulations sa lahat ng nagtagumpay ngayon! Patunay ito na ang tunay na sipag at dedikasyon sa serbisyo ay hindi kailanman nasasayang.",
+    "#pro4a #cppo4a To everyone celebrating a milestone today, your hard work has clearly paid off. Congratulations, and we look forward to even more achievements ahead!",
+    "#pro4a #cppo4a Congratulations on this achievement! May this moment remind you and everyone around you that meaningful goals are always worth the effort.",
+    "#pro4a #cppo4a This is a celebration well earned through dedication and sacrifice that often goes unseen. Congratulations to everyone being honored today!",
+    "#pro4a #cppo4a Congratulations! Achievements like this remind the entire PNP family that excellence, paired with integrity, always finds its way to recognition."
+  ],
+
+  flagRaising: [
+    "#pro4a #cppo4a A brand new week and a renewed commitment to serve and protect every Filipino. Starting the week with the flag raised high is always a reminder of what we stand for and what we work toward every single day. Magandang Lunes!",
+    "#pro4a #cppo4a Nothing sets the tone for a great week like seeing our police force come together with purpose and pride. Here's to a productive, safe, and meaningful week ahead for the entire PRO 4A family. Mabuhay!",
+    "#pro4a #cppo4a Every Monday flag raising is a reaffirmation of the oath our men and women in uniform took to serve the Filipino people with honor, integrity, and dedication. Proud of our police force. Have a great week ahead!",
+    "#pro4a #cppo4a The week starts strong when it starts with purpose. Seeing the flag raised and the PNP family come together every Monday is always an inspiring sight. Wishing everyone a safe, productive, and meaningful week of service!",
+    "#pro4a #cppo4a Bagong Lunes, bagong pagkakataon na maglingkod nang mas mahusay para sa bawat Pilipino. Ipinagmamalaki namin ang ating PRO 4A family na laging handa at laging determinadong gumawa ng pagbabago sa ating mga komunidad!",
+    "#pro4a #cppo4a As the flag rises so does our commitment to keep every Filipino safe, protected, and well served. Wishing the entire PRO 4A family a week filled with meaningful service, successful operations, and continued excellence!",
+    "#pro4a #cppo4a Monday mornings hit different when you see your police force start the week with discipline, pride, and a genuine commitment to serving the nation. Have a safe and productive week ahead, PRO 4A family. Mabuhay!",
+    "#pro4a #cppo4a Week after week, the PNP shows up and gives its best for every Filipino. That kind of consistency and dedication is what makes our police force truly worthy of our trust and respect. Have a great week ahead!",
+    "#pro4a #cppo4a The flag stands tall and so does the spirit of every officer who wears the uniform with pride and purpose. Here's to another week of outstanding service, meaningful impact, and continued dedication to the Filipino people!",
+    "#pro4a #cppo4a Magandang umaga at maligayang Lunes sa buong PRO 4A family! Nawa ang bagong linggong ito ay magdala ng mas maraming tagumpay, mas malalim na ugnayan sa komunidad, at mas malakas na determinasyon na maglingkod sa bawat Pilipino!",
+    "#pro4a #cppo4a There is something truly powerful about starting the week by honoring the flag and reaffirming your commitment to the nation. The PNP does this every Monday and it shows in the way they serve every single day. Proud ng PRO 4A!",
+    "#pro4a #cppo4a A new week is a new opportunity to make a difference and the PNP never wastes that opportunity. Starting Monday right with the flag raising ceremony sets the tone for a week of excellence and impactful service. Tuloy ang galing!",
+    "#pro4a #cppo4a The flag raising is not just a ceremony. It is a declaration that our police force is ready, committed, and fully dedicated to serving and protecting every Filipino for another week. Here's to a great one ahead!",
+    "#pro4a #cppo4a Seeing the Philippine flag raised high at the start of every week is a reminder of what our police force fights for every single day. Safety, peace, and a better Philippines for every Filipino. Magandang Lunes sa lahat!",
+    "#pro4a #cppo4a Sa bawat pagsikat ng watawat, muling pinapaalala sa ating mga pulis ang kanilang pangako sa bawat Pilipino. Isang linggong puno ng layunin, dedikasyon, at tunay na serbisyo ang aming inaasahan mula sa ating PRO 4A family!",
+    "#pro4a #cppo4a Monday flag raising is a tradition that never gets old because the values it represents never get old either. Honor, service, and dedication to the Filipino people. Wishing PRO 4A a safe and productive week ahead!",
+    "#pro4a #cppo4a Every week is a fresh start and a new chance to serve better, reach further, and make a bigger difference in the lives of every Filipino. Wishing the entire PRO 4A family a week filled with purpose and meaningful service!",
+    "#pro4a #cppo4a The week may be new but the commitment remains the same. To serve and protect every Filipino with everything we have got. That is the PRO 4A way and we could not be more proud. Have a great week ahead!",
+    "#pro4a #cppo4a Lunes na naman at handa na ang ating PRO 4A family para sa isa pang linggong puno ng serbisyo at dedikasyon. Nawa ang lahat ng ating mga pulis ay manatiling ligtas, malusog, at inspirado sa kanilang paglilingkod sa bawat Pilipino!",
+    "#pro4a #cppo4a Here is to another week of showing up, giving our best, and making every Filipino feel that they are safe and valued. The PRO 4A family is ready and the nation can count on us. Magandang Lunes at mabuhay ang PNP!",
+    "#pro4a #cppo4a Bagong linggo, bagong pagkakataong patunayan ang dedikasyon ng ating PNP sa serbisyo. Magandang Lunes sa buong PRO 4A family!",
+    "#pro4a #cppo4a Watching the flag rise every Monday is a quiet reminder of the bigger mission behind every patrol, every report, and every shift. Mabuhay!",
+    "#pro4a #cppo4a There is something grounding about starting the week with a flag raising ceremony. It reminds everyone exactly who they are serving. Magandang Lunes!",
+    "#pro4a #cppo4a Every Monday flag raising is proof that discipline and pride still mean something in an organization built on service. Have a great week ahead!",
+    "#pro4a #cppo4a Lunes na naman, at handa ang ating mga kapulisan para sa isa pang linggo ng serbisyo at tunay na pagmamalasakit. Mabuhay ang PRO 4A!",
+    "#pro4a #cppo4a The flag does not just rise on its own, it rises because of people who choose duty over comfort every single week. Magandang umaga!",
+    "#pro4a #cppo4a Starting the week with this kind of ceremony sets a tone of seriousness and pride that carries through every shift that follows. Mabuhay!",
+    "#pro4a #cppo4a This Monday tradition is small in time but big in meaning, reminding every officer why the uniform matters. Have a productive week, PRO 4A!",
+    "#pro4a #cppo4a Bawat pagsikat ng watawat sa umaga ng Lunes ay paalala sa atin na bago pa lang ang linggo, handa na ang ating PNP. Mabuhay!",
+    "#pro4a #cppo4a There is quiet strength in a routine like this, one that keeps every officer anchored to purpose at the start of every single week!",
+    "#pro4a #cppo4a Magandang Lunes sa ating PRO 4A family! Nawa ang bagong linggo ay magdala ng mas malaking pagbabago at mas matibay na serbisyo!",
+    "#pro4a #cppo4a The flag raising ceremony is more than tradition, it is a weekly recommitment to the people every officer swore to protect. Have a great week!",
+    "#pro4a #cppo4a Every week starts the same way for a reason: pride, discipline, and a reminder of duty. Wishing the entire PRO 4A family a great week ahead!",
+    "#pro4a #cppo4a Lunes ulit, at sa tuwing itinataas ang ating bandila, naaalala namin kung gaano kahalaga ang papel ng ating mga pulis sa lipunan. Mabuhay!",
+    "#pro4a #cppo4a This weekly ceremony might seem routine, but it carries the weight of an entire organization's commitment to service. Magandang linggo, PNP!",
+    "#pro4a #cppo4a A flag rising at the start of the week is also a quiet promise being renewed by every officer standing beneath it. Have a safe week ahead!",
+    "#pro4a #cppo4a Bagong Lunes, bagong simula. Nawa ang linggong ito ay puno ng tagumpay, kaligtasan, at patuloy na serbisyo para sa bawat Pilipino. Mabuhay!",
+    "#pro4a #cppo4a There is pride in tradition, and the Monday flag raising remains one of the most meaningful traditions within the entire organization. Magandang Lunes!",
+    "#pro4a #cppo4a Every week the flag rises and every week the PNP rises to meet it with renewed purpose. Wishing PRO 4A a safe and productive week ahead!",
+    "#pro4a #cppo4a This simple ceremony carries a powerful message: that service to country starts the moment the week begins. Have a great week, PRO 4A family!"
+  ],
+
+  mourning: [
+    "#pro4a #cppo4a Our deepest condolences to the family and loved ones of the departed. May you find strength and comfort in the memories you shared and in the love that surrounds you during this incredibly difficult time. Rest in peace.",
+    "#pro4a #cppo4a Words cannot fully express the pain of losing someone dear but know that you are not alone in your grief. The entire PRO 4A family extends its heartfelt sympathies to the bereaved family. May the soul of the departed rest in eternal peace.",
+    "#pro4a #cppo4a In this time of sorrow, may the family find peace in knowing that their loved one is now in a better place. Our sincerest condolences to everyone who is grieving. You are in our thoughts and prayers always.",
+    "#pro4a #cppo4a Gone from our sight but never from our hearts. To the family and friends of the departed, may you be surrounded by love, comfort, and the warmth of cherished memories during this time of loss. Condolences po.",
+    "#pro4a #cppo4a Ang pagkawala ng isang mahal sa buhay ay isa sa pinakamabigat na bagay na kakaharapin ng sinuman. Sa pamilya ng yumaong minamahal, alam ninyong ang aming mga puso ay kasama ninyo sa inyong pagdadalamhati. Magpahinga ka sa kapayapaan.",
+    "#pro4a #cppo4a May the departed soul find eternal rest and may the family left behind find the strength to carry on. Grief is the price we pay for love and that love will never fade. Our prayers are with you always.",
+    "#pro4a #cppo4a To the grieving family, please know that you are surrounded by people who care deeply for you. Though no words can ease the pain of this loss, may you find solace in the love and support of those around you. Condolences.",
+    "#pro4a #cppo4a Life is fleeting but the impact of a good person lives on forever. Our heartfelt condolences to the family and loved ones of the departed. May their memory be a source of strength and inspiration in the days ahead.",
+    "#pro4a #cppo4a Sa oras ng pagdadalamhati, nawa ang pamilya ay makaramdam ng pagmamahal at suporta ng lahat ng nakapaligid sa kanila. Ang aming puso at panalangin ay kasama ninyo. Magpahinga nawa ang kaluluwa ng yumaong minamahal sa walang hanggang kapayapaan.",
+    "#pro4a #cppo4a We may not fully understand why we lose the people we love but we hold on to the hope that they are in a far better place. To the bereaved family, our sincerest condolences and our warmest prayers. You are not alone.",
+    "#pro4a #cppo4a The pain of loss is real and it is heavy but so is the love that remains. To the family of the departed, may the beautiful memories you shared bring you comfort and may the days ahead bring you healing and peace.",
+    "#pro4a #cppo4a Those who leave us never truly go away. They live on in the love they gave, the lives they touched, and the memories they left behind. Our deepest condolences to the grieving family. May you find peace in this difficult time.",
+    "#pro4a #cppo4a Napakaraming salamat sa buhay na ibinahagi ng yumaong minamahal sa inyong pamilya at sa lahat ng kanyang nakilala. Sa pamilyang naulila, nawa ang Panginoon ay magbigay sa inyo ng lakas at kapayapaan sa panahon ng inyong pagdadalamhati.",
+    "#pro4a #cppo4a A life well lived deserves to be remembered and honored. Our heartfelt condolences to the family of the departed. May their legacy of love and goodness continue to inspire everyone whose life they have touched.",
+    "#pro4a #cppo4a Grief reminds us of how deeply we loved and how meaningful life truly is. To the family in mourning, may you be wrapped in comfort, strength, and the peace that only God can give. Our prayers are with you always.",
+    "#pro4a #cppo4a To lose someone you love is to carry a piece of their soul with you forever. Our deepest sympathies to the bereaved family. May the warmth of love and the light of beautiful memories guide you through this time of sorrow.",
+    "#pro4a #cppo4a Hindi kailanman madaling tanggapin ang pagkawala ng isang mahal sa buhay. Sa pamilyang naulila, ang aming taos-pusong pakikiramay ay ipinapaabot sa inyo. Nawa ang Diyos ay yakapin kayo sa Kanyang walang hanggang awa at pagmamahal.",
+    "#pro4a #cppo4a Though the departed is no longer with us in person, the love they gave and the joy they brought will forever remain in the hearts of those who knew them. Our sincerest condolences to the family. You are in our prayers.",
+    "#pro4a #cppo4a May the soul of the departed be at peace and may the family find healing in the love and support of those around them. In this time of grief, please know that you are never alone. Our hearts are with you always.",
+    "#pro4a #cppo4a The greatest comfort in loss is knowing that love never truly ends. To the bereaved family, our deepest condolences and warmest prayers. May the departed rest in God's loving embrace and may your family find peace and healing soon.",
+    "#pro4a #cppo4a Walang sapat na salita upang ipahayag ang lungkot sa pagkawala ng isang minamahal. Nawa ay makahanap ang pamilya ng lakas sa panahong ito.",
+    "#pro4a #cppo4a In moments of loss, words often fail us, but love never does. Our deepest condolences to the family during this incredibly difficult time.",
+    "#pro4a #cppo4a May the family find comfort in the support of those around them and peace in knowing their loved one is now at rest. Our condolences.",
+    "#pro4a #cppo4a Losing someone we love leaves a space nothing else can fill, but the memories shared remain forever. Our heartfelt sympathies to the family.",
+    "#pro4a #cppo4a Sa panahon ng pagdadalamhati, alamin ninyo na hindi kayo nag-iisa. Kasama namin kayo sa panalangin. Magpahinga nawa sa kapayapaan ang yumao.",
+    "#pro4a #cppo4a Our condolences to everyone grieving today. May the love shared in life continue to bring comfort in the days, weeks, and years ahead.",
+    "#pro4a #cppo4a There is no timeline for grief, only the gentle hope that love and memory eventually bring a measure of peace. Our deepest sympathies to the family.",
+    "#pro4a #cppo4a To the family in mourning, may you find strength in each other and peace in the beautiful memories left behind. Our condolences and prayers.",
+    "#pro4a #cppo4a Ang bawat buhay na natapos ay nag-iiwan ng yapak sa puso ng mga naiwan. Lubos na pakikiramay sa pamilya sa panahong ito ng pagluluksa.",
+    "#pro4a #cppo4a Our hearts go out to the family and friends during this time of loss. May peace find you even in the smallest, quietest moments ahead.",
+    "#pro4a #cppo4a Grief is the echo of love that has nowhere else to go, and we hope the family finds comfort in shared memories. Our sincerest condolences.",
+    "#pro4a #cppo4a May the soul of the departed rest in eternal peace, and may the family find healing through the love and prayers surrounding them now.",
+    "#pro4a #cppo4a Sa pagkawala ng isang mahal sa buhay, nawa'y mapuno ng init at pagmamahal ang puso ng pamilyang naulila. Kasama namin kayo sa dasal.",
+    "#pro4a #cppo4a Our deepest condolences to everyone affected by this loss. May comfort come slowly but surely through the support of family and community.",
+    "#pro4a #cppo4a Though words cannot ease this kind of pain, we hope the family feels the quiet presence of everyone praying for them during this time.",
+    "#pro4a #cppo4a To the family of the departed, may every memory you carry become a source of strength rather than sorrow in the days ahead. Condolences.",
+    "#pro4a #cppo4a Walang hanggang pagmamahal ang naiwan kahit pumanaw na ang katawan. Lubos na pakikiramay sa buong pamilya sa oras ng kalungkutang ito.",
+    "#pro4a #cppo4a Our prayers are with the family as they navigate this difficult season. May they be surrounded by comfort, love, and gentle support always.",
+    "#pro4a #cppo4a The departed may be gone from sight, but never from the hearts of those who loved them. Our condolences to the grieving family today.",
+    "#pro4a #cppo4a May the family find peace in knowing that the love their departed loved one gave will continue to live on. Our deepest sympathies and prayers."
+  ],
+
+  cyberScam: [
+    "#pro4a #cppo4a Thank you, PNP, for this important reminder! Cyber scams are getting more sophisticated every day so let us all stay alert, stay informed, and never share personal information with anyone online. Stay safe, mga kababayan!",
+    "#pro4a #cppo4a This is a reminder we all need to hear and share! Cyber criminals are everywhere online and they are getting smarter. Thank you, PNP, for keeping every Filipino informed and protected in the digital world!",
+    "#pro4a #cppo4a Huwag basta-basta magtiwala sa mga mensahe, tawag, o link na hindi mo kilala. Ang mga scammer ay naghihintay ng pagkakataon na lokohin tayo. Salamat sa PNP sa patuloy na paalala para sa ating kaligtasan online!",
+    "#pro4a #cppo4a If it sounds too good to be true, it probably is! Cyber scams prey on unsuspecting Filipinos every single day. Thank you, PNP, for reminding us to always think twice before clicking, sharing, or sending anything online!",
+    "#pro4a #cppo4a Online safety is just as important as physical safety and the PNP knows this well. Thank you for this timely reminder to always be cautious and vigilant in everything we do online. Share this with your loved ones!",
+    "#pro4a #cppo4a Cyber scammers are becoming more creative and more convincing every day. Stay one step ahead by staying informed and always verifying before you trust. Thank you, PNP, for looking out for every Filipino even in the digital space!",
+    "#pro4a #cppo4a Wag palampasin ang paalala na ito! Ang mga cyber scam ay hindi lang nangyayari sa iba maaari itong mangyari sa sinuman sa atin. Manatiling alerto, mag-ingat sa mga kahina-hinalang mensahe, at iulat agad sa PNP kung may mapapansin!",
+    "#pro4a #cppo4a Your personal information is valuable so protect it at all costs! Never share your OTP, bank details, or passwords with anyone no matter how convincing they sound. Thank you, PNP, for this very important cyber safety reminder!",
+    "#pro4a #cppo4a The best defense against cyber scams is awareness and the PNP is making sure every Filipino has it. Share this reminder with your family and friends because one shared post could save someone from becoming the next victim!",
+    "#pro4a #cppo4a Think before you click, verify before you trust, and report before it is too late. Thank you, PNP, for continuously educating and protecting Filipinos from the growing threat of cyber scams. Stay safe online, mga kababayan!",
+    "#pro4a #cppo4a Never let urgency rush you into clicking a link. Scammers count on panic, so slow down, verify, and protect your information. Thank you, PNP!",
+    "#pro4a #cppo4a Huwag basta magbigay ng OTP kahit pa sabihing ito ay mula sa bangko. Ang mga scammer ay laging may dahilan para makuha ang inyong tiwala!",
+    "#pro4a #cppo4a A legitimate company will never pressure you to act immediately. If something feels rushed, it is probably a scam. Thank you for this reminder, PNP!",
+    "#pro4a #cppo4a Cyber criminals do not need to break into your home, they just need you to click one wrong link. Stay alert, stay informed, mga kababayan!",
+    "#pro4a #cppo4a Wag pagkatiwalaan ang mga numero o accounts na hindi opisyal. Tama lang na mag-verify muna bago kumilos. Salamat sa paalala, PNP!",
+    "#pro4a #cppo4a If a stranger online suddenly wants to be your best friend or business partner overnight, slow down. Scammers thrive on fast-built false trust!",
+    "#pro4a #cppo4a Your bank will never ask for your PIN through a text message or call. Thank you, PNP, for continuing to protect Filipinos from these tricks!",
+    "#pro4a #cppo4a Scammers are not just targeting the careless, they are targeting the busy and the trusting too. Stay alert no matter how confident you feel online!",
+    "#pro4a #cppo4a Bago kayo mag-click, mag-isip muna. Bago kayo mag-share, mag-tanong muna. Ang ilang segundo ng pag-iingat ay mas mabuti kaysa pagsisisi. Salamat, PNP!",
+    "#pro4a #cppo4a Thank you, PNP, for treating online safety with the same seriousness as physical safety. Cyber scams can hurt just as deeply as any street crime!",
+    "#pro4a #cppo4a If you did not initiate the call or message, treat every request for personal information with suspicion. Better safe than scammed. Salamat, PNP!",
+    "#pro4a #cppo4a Scammers rely on us being too embarrassed to ask questions. There is no shame in double-checking before you trust. Thank you for the reminder, PNP!",
+    "#pro4a #cppo4a Ang pagiging maingat sa internet ay parang pagiging maingat sa kalye. Pareho lang silang nangangailangan ng kaalaman at konting pag-aalala. Salamat, PNP!",
+    "#pro4a #cppo4a One unfamiliar link is all it takes for scammers to access everything. Think twice, verify always, and never let curiosity override caution online!",
+    "#pro4a #cppo4a Thank you, PNP, for making sure every Filipino, young and old, understands how cyber scams work. Awareness truly is the first line of defense!",
+    "#pro4a #cppo4a If an offer online feels designed to make you panic or get excited too quickly, pause. That feeling is usually the scam working exactly as intended.",
+    "#pro4a #cppo4a Wag kalimutan na ang totoong tulong ay hindi humihingi ng pera o personal information agad. Mag-ingat lagi sa mga kahina-hinalang alok online!",
+    "#pro4a #cppo4a Cyber scams evolve fast, but so does awareness when the PNP keeps sharing reminders like this. Thank you for keeping every Filipino one step ahead!",
+    "#pro4a #cppo4a It only takes one moment of doubt to stop a scam before it starts. Trust that instinct, verify the source, and stay protected online. Salamat, PNP!",
+    "#pro4a #cppo4a Thank you, PNP, for reminding us that protecting our digital lives matters just as much as protecting our physical ones. Stay safe online, everyone!",
+    "#pro4a #cppo4a Scammers count on you not double-checking, so make double-checking your habit instead of your exception. Thank you, PNP, for this reminder!",
+    "#pro4a #cppo4a Wag basta-basta magtiwala sa link na ipinadala ng hindi kilalang numero. Isang segundong pag-iingat ay mas mabuti kaysa pagsisisi. Salamat, PNP!",
+    "#pro4a #cppo4a If something online asks for your password under pressure, that pressure itself is the red flag. Stay alert, mga kababayan, and verify always!",
+    "#pro4a #cppo4a Thank you, PNP, for treating cyber safety as seriously as street safety. Both can hurt deeply, and both deserve our full attention and caution!",
+    "#pro4a #cppo4a Scammers rely on speed and silence. Break both by slowing down and talking to someone before clicking anything suspicious. Salamat sa paalala, PNP!",
+    "#pro4a #cppo4a Huwag mahihiya na magtanong kung may pakiramdam kang kahina-hinala ang isang mensahe o tawag. Mas mabuting ligtas kaysa malugi. Salamat, PNP!",
+    "#pro4a #cppo4a A few extra seconds spent verifying a link could save you from days of cleaning up after a scam. Thank you, PNP, for this valuable reminder!",
+    "#pro4a #cppo4a Cyber scams thrive on assumptions, so question everything that asks for urgency, money, or personal details online. Stay alert, mga kababayan!",
+    "#pro4a #cppo4a Thank you, PNP, for reminding every Filipino that staying informed is the strongest defense we have against digital criminals. Stay safe online!",
+    "#pro4a #cppo4a If it feels rushed, sounds too generous, or asks for information it should not need, trust your instincts and walk away. Salamat sa paalala, PNP!"
+  ]
+};
+
+const topicIcons = {
+  achievements: '🏆', goodDeeds: '❤️', communityReminders: '📢',
+  successfulOps: '🚔', goodNews: '📰', pressBriefing: '🎙️',
+  awards: '🎖️', congratulations: '🎉', flagRaising: '🇵🇭',
+  mourning: '🕊️', cyberScam: '🔐'
+};
+
+const PAGE_SIZE = 10;
+let currentPage = 1;
+let currentTopic = '';
+
+// Tracks which comments have already been copied, per topic, for this session.
+// Structure: { topicKey: Set(indices) }
+const copiedTracker = {};
+
+let toastTimeout;
+
+function loadComments() {
+  const topic = document.getElementById('topicSelect').value;
+  const list = document.getElementById('commentsList');
+  const metaRow = document.getElementById('metaRow');
+  const countEl = document.getElementById('commentCount');
+  const pagination = document.getElementById('pagination');
+
+  // Reset to page 1 whenever the topic changes
+  if (topic !== currentTopic) {
+    currentPage = 1;
+    currentTopic = topic;
+  }
+
+  if (!topic) {
+    list.innerHTML = '<div class="empty"><div class="icon">💬</div><p>Select a topic above to see all available comments</p></div>';
+    metaRow.style.display = 'none';
+    pagination.style.display = 'none';
+    pagination.innerHTML = '';
+    return;
+  }
+
+  const data = comments[topic] || [];
+  const icon = topicIcons[topic] || '💬';
+  countEl.textContent = data.length;
+  metaRow.style.display = 'flex';
+
+  renderPage(topic, data, icon);
+}
+
+function renderPage(topic, data, icon) {
+  const list = document.getElementById('commentsList');
+  const pagination = document.getElementById('pagination');
+  const pageInfo = document.getElementById('pageInfo');
+
+  const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  if (pageInfo) {
+    pageInfo.textContent = totalPages > 1 ? `· Page ${currentPage} of ${totalPages}` : '';
+  }
+
+  const startIdx = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = data.slice(startIdx, startIdx + PAGE_SIZE);
+
+  if (!copiedTracker[topic]) copiedTracker[topic] = new Set();
+  const copiedSet = copiedTracker[topic];
+
+  list.innerHTML = pageItems.map((text, localI) => {
+    const globalIndex = startIdx + localI;
+    const wasCopied = copiedSet.has(globalIndex);
+    return `
+    <div class="comment-card${wasCopied ? ' was-copied' : ''}" onclick="copyComment(this, ${globalIndex})" data-text="${text.replace(/"/g, '&quot;')}" data-topic="${topic}">
+      <div class="card-icon" id="icon-${globalIndex}">${icon}</div>
+      <div class="card-text">${text}</div>
+      <span class="already-copied-badge" id="badge-${globalIndex}">✓ Copied</span>
+      <span class="copy-label" id="label-${globalIndex}">${wasCopied ? 'TAP TO COPY AGAIN' : 'TAP TO COPY'}</span>
+    </div>
+  `;
+  }).join('');
+
+  renderPagination(topic, data, icon, totalPages);
+}
+
+function renderPagination(topic, data, icon, totalPages) {
+  const pagination = document.getElementById('pagination');
+
+  if (totalPages <= 1) {
+    pagination.style.display = 'none';
+    pagination.innerHTML = '';
+    return;
+  }
+
+  pagination.style.display = 'flex';
+
+  const buttons = [];
+
+  buttons.push(`<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})" aria-label="Previous page">‹</button>`);
+
+  const pageNumbers = getPageNumbers(currentPage, totalPages);
+  pageNumbers.forEach(p => {
+    if (p === '...') {
+      buttons.push('<span class="page-ellipsis">⋯</span>');
+    } else {
+      buttons.push(`<button class="page-btn${p === currentPage ? ' active' : ''}" onclick="goToPage(${p})">${p}</button>`);
+    }
+  });
+
+  buttons.push(`<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})" aria-label="Next page">›</button>`);
+
+  pagination.innerHTML = buttons.join('');
+}
+
+// Builds a compact page-number list like: 1 ... 4 5 6 ... 12
+// For small page counts, just show every page number (no ellipsis needed).
+function getPageNumbers(current, total) {
+  if (total <= 7) {
+    const all = [];
+    for (let i = 1; i <= total; i++) all.push(i);
+    return all;
+  }
+
+  const delta = 1;
+  const range = [];
+  for (let i = Math.max(1, current - delta); i <= Math.min(total, current + delta); i++) {
+    range.push(i);
+  }
+
+  const withEdges = [];
+  if (range[0] > 1) {
+    withEdges.push(1);
+    if (range[0] > 2) withEdges.push('...');
+  }
+  withEdges.push(...range);
+  if (range[range.length - 1] < total) {
+    if (range[range.length - 1] < total - 1) withEdges.push('...');
+    withEdges.push(total);
+  }
+  return withEdges;
+}
+
+function goToPage(page) {
+  const totalPages = Math.max(1, Math.ceil((comments[currentTopic] || []).length / PAGE_SIZE));
+  if (page < 1 || page > totalPages || page === currentPage) return;
+  currentPage = page;
+  const data = comments[currentTopic] || [];
+  const icon = topicIcons[currentTopic] || '💬';
+  renderPage(currentTopic, data, icon);
+
+  // Scroll back to top of the list for easier reading on page change
+  document.getElementById('commentsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyComment(card, index) {
+  const text = card.getAttribute('data-text');
+  const topic = card.getAttribute('data-topic');
+
+  // Clipboard API
+  navigator.clipboard.writeText(text).then(() => {
+    showCopied(card, index, topic);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showCopied(card, index, topic);
+  });
+}
+
+function showCopied(card, index, topic) {
+  // Mark this comment as permanently "already copied" for the session
+  if (!copiedTracker[topic]) copiedTracker[topic] = new Set();
+  copiedTracker[topic].add(index);
+  card.classList.add('was-copied');
+
+  card.classList.add('copied');
+  const iconEl = document.getElementById('icon-' + index);
+  const labelEl = document.getElementById('label-' + index);
+  const origIcon = iconEl.textContent;
+
+  iconEl.textContent = '✓';
+  if (labelEl) labelEl.textContent = 'COPIED!';
+
+  // Toast
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 2000);
+
+  // Reset the transient flash state after 2.5s, but keep the persistent "already copied" badge
+  setTimeout(() => {
+    card.classList.remove('copied');
+    iconEl.textContent = origIcon;
+    if (labelEl) labelEl.textContent = 'TAP TO COPY AGAIN';
+  }, 2500);
+}
+</script>
+</body>
+</html>
