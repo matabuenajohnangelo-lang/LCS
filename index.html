@@ -21,31 +21,42 @@
     --gray-400: #8a9ab8;
     --green: #22c55e;
     --card-hover: #1a2d55;
+    --coral: #ff6b5b;
+    --coral-dim: #e0503f;
+    --sky: #4dd4f0;
+    --violet: #a78bfa;
   }
 
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--navy);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(245, 200, 66, 0.10), transparent 40%),
+      radial-gradient(circle at 88% 18%, rgba(255, 107, 91, 0.10), transparent 42%),
+      radial-gradient(circle at 50% 95%, rgba(77, 212, 240, 0.07), transparent 45%),
+      var(--navy);
+    background-attachment: fixed;
     color: var(--white);
     min-height: 100vh;
-    padding-bottom: 40px;
+    padding-bottom: 100px;
   }
 
   /* HEADER */
   header {
-    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%);
-    border-bottom: 3px solid var(--gold);
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 55%, #24305e 100%);
+    border-bottom: 3px solid transparent;
+    border-image: linear-gradient(90deg, var(--gold), var(--coral), var(--sky), var(--gold)) 1;
     padding: 20px 24px 16px;
     text-align: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+    overflow: hidden;
   }
 
   .header-badge {
     display: inline-block;
-    background: var(--gold);
+    background: linear-gradient(120deg, var(--gold) 0%, #ffd866 100%);
     color: var(--navy);
     font-size: 10px;
     font-weight: 700;
@@ -54,13 +65,28 @@
     padding: 3px 10px;
     border-radius: 20px;
     margin-bottom: 6px;
+    box-shadow: 0 2px 10px rgba(245, 200, 66, 0.35);
   }
 
   header h1 {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 700;
     color: var(--white);
     letter-spacing: 0.3px;
+  }
+
+  header h1 .wave {
+    display: inline-block;
+    animation: wave 2.2s ease-in-out infinite;
+    transform-origin: 70% 70%;
+  }
+
+  @keyframes wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(14deg); }
+    40% { transform: rotate(-4deg); }
   }
 
   header p {
@@ -106,11 +132,20 @@
     appearance: none;
     cursor: pointer;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+  }
+
+  select:hover {
+    border-color: var(--gold-dim);
   }
 
   select:focus {
     border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(245, 200, 66, 0.18);
+  }
+
+  select:active {
+    transform: scale(0.995);
   }
 
   /* COUNT + HINT */
@@ -151,33 +186,45 @@
     gap: 10px;
   }
 
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .comment-card {
     background: var(--navy-mid);
     border: 1.5px solid var(--navy-light);
+    border-left: 3px solid var(--navy-light);
     border-radius: 12px;
     padding: 14px 16px;
     cursor: pointer;
     position: relative;
-    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    transition: background 0.18s, border-color 0.18s, transform 0.15s, box-shadow 0.18s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     display: flex;
     align-items: flex-start;
     gap: 12px;
+    animation: cardIn 0.35s ease backwards;
   }
 
   .comment-card:hover {
     background: var(--card-hover);
     border-color: var(--gold-dim);
+    border-left-color: var(--coral);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35), 0 0 0 1px rgba(245, 200, 66, 0.08);
   }
 
   .comment-card:active {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(0);
   }
 
   .comment-card.copied {
     border-color: var(--green);
+    border-left-color: var(--green);
     background: #0d2a1a;
+    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.25), 0 8px 20px rgba(34, 197, 94, 0.12);
   }
 
   .card-icon {
@@ -185,17 +232,21 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: var(--navy-light);
+    background: linear-gradient(135deg, var(--navy-light), #28407a);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    transition: background 0.15s;
+    transition: background 0.15s, transform 0.15s;
     margin-top: 1px;
   }
 
+  .comment-card:hover .card-icon {
+    transform: scale(1.08) rotate(-4deg);
+  }
+
   .comment-card.copied .card-icon {
-    background: var(--green);
+    background: linear-gradient(135deg, var(--green), #16a34a);
   }
 
   .card-text {
@@ -277,19 +328,26 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s, box-shadow 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
 
   .page-btn:hover:not(:disabled) {
     background: var(--card-hover);
     border-color: var(--gold-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .page-btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
   }
 
   .page-btn.active {
-    background: var(--gold);
+    background: linear-gradient(135deg, var(--gold), #ffd866);
     color: var(--navy);
     border-color: var(--gold);
+    box-shadow: 0 3px 12px rgba(245, 200, 66, 0.4);
   }
 
   .page-btn:disabled {
@@ -306,26 +364,26 @@
   /* TOAST */
   #toast {
     position: fixed;
-    bottom: 28px;
+    bottom: 100px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--green);
+    transform: translateX(-50%) translateY(20px) scale(0.9);
+    background: linear-gradient(120deg, var(--green), #16d672);
     color: var(--navy);
     padding: 10px 22px;
     border-radius: 30px;
     font-size: 13px;
     font-weight: 700;
     opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
+    transition: opacity 0.25s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
     z-index: 999;
     white-space: nowrap;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 24px rgba(34, 197, 94, 0.35);
   }
 
   #toast.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 
   /* EMPTY STATE */
@@ -338,17 +396,67 @@
   .empty .icon { font-size: 40px; margin-bottom: 12px; }
   .empty p { font-size: 14px; }
 
+  /* GO TO TOP BUTTON */
+  #goTopBtn {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--coral), var(--coral-dim));
+    color: var(--white);
+    border: none;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 107, 91, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.85);
+    transition: opacity 0.25s, transform 0.25s, box-shadow 0.2s;
+    z-index: 998;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #goTopBtn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  #goTopBtn:hover {
+    box-shadow: 0 8px 26px rgba(255, 107, 91, 0.6);
+    transform: translateY(-3px) scale(1.05);
+  }
+
+  #goTopBtn:active {
+    transform: translateY(-1px) scale(0.92);
+  }
+
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--navy); }
   ::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
+
+  /* REDUCED MOTION */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-badge">PRO 4A · CPPO 4A</div>
-  <h1>📋 Comment Copier</h1>
+  <h1><span class="wave">📋</span> Comment Copier</h1>
   <p>Select a topic, then tap any comment to copy it instantly</p>
 </header>
 
@@ -367,6 +475,9 @@
       <option value="flagRaising">🇵🇭 Flag Raising Ceremony</option>
       <option value="mourning">🕊️ Mourning / Condolences</option>
       <option value="cyberScam">🔐 Cyber Scam Reminders</option>
+      <option value="drugOps">💊 Successful Drug Operations</option>
+      <option value="smuggledFakeOps">📦 Smuggled &amp; Fake Products</option>
+      <option value="hviWantedOps">🎯 HVI &amp; Wanted Persons</option>
     </select>
   </div>
 
@@ -386,6 +497,8 @@
 </div>
 
 <div id="toast">✅ Copied to clipboard!</div>
+
+<button id="goTopBtn" onclick="scrollToTop()" aria-label="Go to top" title="Back to top">⬆</button>
 
 <script>
 const comments = {
@@ -860,14 +973,145 @@ const comments = {
     "#pro4a #cppo4a Cyber scams thrive on assumptions, so question everything that asks for urgency, money, or personal details online. Stay alert, mga kababayan!",
     "#pro4a #cppo4a Thank you, PNP, for reminding every Filipino that staying informed is the strongest defense we have against digital criminals. Stay safe online!",
     "#pro4a #cppo4a If it feels rushed, sounds too generous, or asks for information it should not need, trust your instincts and walk away. Salamat sa paalala, PNP!"
+  ],
+
+  drugOps: [
+    "#pro4a #cppo4a Another successful anti-drug operation that proves the PNP will never back down in the fight against illegal drugs. Congratulations to all the officers involved and thank you for protecting our youth and our communities from this menace!",
+    "#pro4a #cppo4a The fight against illegal drugs continues and the PNP is winning battle after battle. Thank you for risking your lives to keep dangerous substances out of our streets and out of the hands of our children. Mabuhay ang PNP!",
+    "#pro4a #cppo4a Every successful drug operation is one less threat to our families and one more reason to trust the men and women who serve in the PNP. Congratulations on this latest victory against illegal drugs!",
+    "#pro4a #cppo4a Patuloy na pinapatunayan ng PNP na seryoso sila sa giyera laban sa illegal drugs. Salamat sa inyong tapang at dedikasyon sa pagprotekta ng kabataan at kinabukasan ng bansa. Mabuhay ang ating mga pulis!",
+    "#pro4a #cppo4a This operation removed dangerous substances from our streets and sent a clear message that the PNP will not tolerate illegal drug activity in any community. Congratulations to the team behind this success!",
+    "#pro4a #cppo4a Drug operations like this are never easy or risk-free, yet our officers continue to put themselves on the line to keep our communities clean and safe. Thank you for your courage and commitment, PNP!",
+    "#pro4a #cppo4a Salamat sa inyong walang humpay na pagsugpo sa illegal drugs. Bawat successful operation ay isang hakbang palayo sa droga at isang hakbang patungo sa mas ligtas na kapaligiran para sa ating mga anak!",
+    "#pro4a #cppo4a The PNP's relentless campaign against illegal drugs is making a real and visible difference in our communities. Congratulations on this successful operation and thank you for never giving up the fight!",
+    "#pro4a #cppo4a Behind every drug bust is intelligence work, surveillance, and real danger that our officers willingly face for the safety of every Filipino family. Saludo sa inyong sakripisyo at determinasyon, PNP!",
+    "#pro4a #cppo4a This is what a Bagong PNP truly looks like in action: relentless, precise, and unwavering in the fight against illegal drugs. Congratulations to everyone who made this operation a success!",
+    "#pro4a #cppo4a Every kilo seized and every pusher arrested is a victory for the countless families who fear what illegal drugs could do to their loved ones. Thank you, PNP, for this successful operation!",
+    "#pro4a #cppo4a Ang bawat successful drug operation ay tanda na hindi sumusuko ang ating PNP sa pakikipaglaban kontra sa droga. Salamat sa inyong serbisyo na nagliligtas ng buhay at kinabukasan ng kabataang Pilipino!",
+    "#pro4a #cppo4a Illegal drugs destroy families and futures, and the PNP continues to stand as the first line of defense against this threat. Congratulations on another successful operation and thank you for your vigilance!",
+    "#pro4a #cppo4a This successful operation reflects months of careful planning, surveillance, and coordinated effort to keep dangerous substances away from our youth. Magaling at maraming salamat sa inyong tapang, PNP!",
+    "#pro4a #cppo4a The war against illegal drugs is far from over, but operations like this remind us that the PNP is fighting it with everything they have. Congratulations to the entire team involved!",
+    "#pro4a #cppo4a Salamat sa pagpapatupad ng batas laban sa illegal drugs. Patuloy ninyong protektahan ang ating mga kabataan mula sa mapanirang epekto ng droga. Mabuhay ang Bagong PNP para sa Bagong Pilipinas!",
+    "#pro4a #cppo4a Every successful drug operation makes our streets a little safer and our future a little brighter. Thank you to every officer who put their safety on the line for this important cause!",
+    "#pro4a #cppo4a This kind of operation requires courage, precision, and a genuine commitment to protecting communities from the destructive grip of illegal drugs. Congratulations to the PNP on another job well done!",
+    "#pro4a #cppo4a Hindi madaling labanan ang illegal drugs, pero patuloy na ipinapakita ng PNP na sila ay handa sa hamong ito. Saludo sa lahat ng kasangkot sa matagumpay na operasyong ito laban sa droga!",
+    "#pro4a #cppo4a The PNP's continued success against illegal drugs gives every parent one less thing to worry about when it comes to their children's safety. Congratulations and thank you for this important work!",
+    "#pro4a #cppo4a Drug operations like this protect not just individuals but entire communities from the cycle of addiction and crime that illegal drugs bring. Thank you, PNP, for your unwavering commitment to this fight!",
+    "#pro4a #cppo4a This successful bust is proof that no amount of money or influence can outrun the determination of a PNP officer committed to ridding our streets of illegal drugs. Congratulations to all involved!",
+    "#pro4a #cppo4a Patuloy ninyong ipagpatuloy ang giyera laban sa illegal drugs. Bawat operasyon tulad nito ay nagdudulot ng pag-asa sa mga komunidad na apektado ng masamang epekto ng droga. Salamat, PNP!",
+    "#pro4a #cppo4a The dangers of illegal drugs cannot be overstated, and every successful operation against it deserves recognition and gratitude. Congratulations to the PNP team behind this latest victory!",
+    "#pro4a #cppo4a This operation shows that the PNP's anti-drug campaign is not just about numbers, it is about saving lives and protecting the future of every Filipino family. Mabuhay ang ating mga bayani sa uniporme!",
+    "#pro4a #cppo4a Removing illegal drugs from circulation, one operation at a time, is exactly the kind of relentless effort our communities need. Thank you, PNP, for this successful and impactful operation!",
+    "#pro4a #cppo4a Salamat sa inyong di natitinag na hangarin na linisin ang ating mga komunidad sa droga. Ang bawat tagumpay na ito ay nagdudulot ng kaligtasan sa ating mga pamilya at sa susunod na henerasyon!",
+    "#pro4a #cppo4a This kind of decisive action against illegal drugs proves that the PNP takes the safety of every Filipino family seriously. Congratulations to all the officers who made this operation possible!",
+    "#pro4a #cppo4a Every successful drug operation chips away at the networks that prey on the vulnerable and destroy communities. Thank you, PNP, for your continued vigilance and bravery in this fight!",
+    "#pro4a #cppo4a The PNP does not just talk about fighting illegal drugs, they take real, decisive action like this operation. Congratulations to everyone involved and thank you for protecting our communities!",
+    "#pro4a #cppo4a Maraming salamat sa inyong tuloy-tuloy na pagsugpo sa droga sa ating mga lugar. Dahil sa inyo, mas ligtas ang ating mga anak at mas malinis ang ating mga komunidad. Mabuhay ang PNP!",
+    "#pro4a #cppo4a This is exactly the kind of operation that restores hope to communities once plagued by illegal drug activity. Congratulations to the PNP team and thank you for your continued dedication!",
+    "#pro4a #cppo4a Operations like this remind every Filipino that the fight against illegal drugs is being fought with intelligence, courage, and unwavering resolve. Well done to everyone who made this possible!",
+    "#pro4a #cppo4a The threat of illegal drugs never sleeps, and neither does the PNP's commitment to fighting it. Congratulations on this successful operation and thank you for your tireless service!",
+    "#pro4a #cppo4a Patunay na ang PNP ay hindi titigil sa paglaban sa illegal drugs hangga't may mga buhay at pamilyang kinakailangang protektahan. Saludo sa inyong dedikasyon at tapang sa operasyong ito!",
+    "#pro4a #cppo4a Behind every successful drug bust is a team that risked everything to make our streets safer for every Filipino family. Congratulations to all involved and thank you for your sacrifice!",
+    "#pro4a #cppo4a This operation is a clear reminder that illegal drugs have no safe place to hide from a determined and well-coordinated PNP. Congratulations on this success and thank you for your service!",
+    "#pro4a #cppo4a Every operation against illegal drugs is a step closer to communities that are healthier, safer, and free from the grip of addiction. Thank you, PNP, for this important achievement!",
+    "#pro4a #cppo4a Salamat sa walang sawang paglaban ng PNP kontra sa droga. Patuloy ninyong bantayan at protektahan ang ating mga komunidad mula sa mga taong nagnanais sumira ng buhay ng kapwa Pilipino!",
+    "#pro4a #cppo4a This successful operation proves once again that illegal drug networks are no match for a committed and well-trained PNP. Congratulations to the entire team and thank you for keeping us safe!"
+  ],
+
+  smuggledFakeOps: [
+    "#pro4a #cppo4a Another successful crackdown on smuggled and counterfeit goods that protects both consumers and legitimate businesses from being cheated. Congratulations to the PNP for this important victory against illegal trade!",
+    "#pro4a #cppo4a Fake products do not just steal money, they put lives at risk through unsafe materials and false promises. Thank you, PNP, for this successful operation against smuggled and counterfeit goods!",
+    "#pro4a #cppo4a This operation sends a clear message that smuggling and selling fake products will not be tolerated. Congratulations to all the officers and agencies involved in this successful crackdown!",
+    "#pro4a #cppo4a Patuloy na ipinapakita ng PNP na seryoso sila sa paglaban kontra sa smuggling at peke na produkto. Salamat sa pagprotekta ninyo sa mga mamimili at sa lehitimong negosyo ng bawat Pilipino!",
+    "#pro4a #cppo4a Counterfeit goods harm honest businesses and put unsuspecting buyers at risk. Thank you, PNP, for this successful operation that takes a stand against smuggled and fake products in our markets!",
+    "#pro4a #cppo4a Every seized shipment of smuggled goods represents lost revenue for criminal syndicates and protected livelihoods for honest Filipino entrepreneurs. Congratulations to the PNP on this successful operation!",
+    "#pro4a #cppo4a Salamat sa inyong tuloy-tuloy na pagbantay laban sa smuggling at peke na produkto. Dahil sa inyo, mas protektado ang kalusugan at kabuhayan ng mga ordinaryong mamimili sa ating bansa!",
+    "#pro4a #cppo4a This successful operation against smuggled and counterfeit products protects consumers from substandard goods that could compromise their health and safety. Magaling at maraming salamat, PNP!",
+    "#pro4a #cppo4a Fake medicines, fake electronics, and smuggled goods all share one thing in common: they put Filipino lives and livelihoods at risk. Congratulations to the PNP for this successful crackdown!",
+    "#pro4a #cppo4a This operation is proof that the PNP is just as committed to fighting economic crimes as it is to fighting street crime. Thank you for protecting Filipino consumers and businesses alike!",
+    "#pro4a #cppo4a Smuggling networks thrive on weak enforcement, but operations like this prove the PNP is not an easy target for criminal syndicates. Congratulations to everyone involved in this successful bust!",
+    "#pro4a #cppo4a Patunay na ang PNP ay hindi lang nagbabantay sa kalye, sila ay nagbabantay din sa ating mga merkado laban sa peke at smuggled na produkto. Saludo sa inyong dedikasyon, PNP!",
+    "#pro4a #cppo4a This successful operation protects honest taxpayers and legitimate businesses from the unfair competition created by smuggled and counterfeit goods. Thank you, PNP, for standing up for fair trade!",
+    "#pro4a #cppo4a Every fake product taken off the shelves is a small victory for consumer safety and economic justice. Congratulations to the PNP on this successful operation against smuggled and counterfeit goods!",
+    "#pro4a #cppo4a Smuggled goods often bypass safety regulations entirely, putting Filipino families at serious risk without their knowledge. Thank you, PNP, for this important operation that protects public safety!",
+    "#pro4a #cppo4a Salamat sa pagpoprotekta ninyo sa ating ekonomiya laban sa mga sindikato ng smuggling. Bawat matagumpay na operasyon ay tagumpay din ng mga lehitimong negosyante at mamimili sa bansa!",
+    "#pro4a #cppo4a This crackdown on counterfeit and smuggled products shows that the PNP understands economic crimes hurt Filipino families just as much as violent crimes do. Congratulations on this success!",
+    "#pro4a #cppo4a Fake products flood our markets every day, but operations like this prove that the PNP is actively working to protect consumers from these deceptive and often dangerous goods. Well done!",
+    "#pro4a #cppo4a Bawat na-seize na smuggled na kalakal ay isang tagumpay para sa lehitimong kalakalan at proteksyon ng ating mga mamimili. Maraming salamat sa inyong pagsisikap, PNP!",
+    "#pro4a #cppo4a This operation against smuggled and counterfeit products is a reminder that protecting the economy is just as important as protecting the streets. Congratulations to the entire team involved!",
+    "#pro4a #cppo4a Counterfeit goods undermine honest businesses and put consumers at risk, but this successful operation shows the PNP is taking the threat seriously. Thank you for this important work!",
+    "#pro4a #cppo4a Patuloy na pinipigilan ng PNP ang mga sindikato ng smuggling na sirain ang ating ekonomiya at kapakanan ng mga mamimili. Saludo sa matagumpay na operasyong ito laban sa peke at smuggled goods!",
+    "#pro4a #cppo4a This is the kind of operation that protects both public health and the integrity of our local markets from fake and smuggled products. Congratulations to the PNP on this success!",
+    "#pro4a #cppo4a Every successful crackdown on smuggling sends a strong message to criminal syndicates that the Philippines is not an easy place to traffic illegal goods. Thank you, PNP, for your vigilance!",
+    "#pro4a #cppo4a Salamat sa inyong determinasyon na protektahan ang mga Pilipinong mamimili mula sa peke at smuggled na produkto. Ang bawat tagumpay na ito ay tagumpay din ng ating ekonomiya!",
+    "#pro4a #cppo4a This operation reflects the PNP's understanding that smuggling and counterfeiting are not victimless crimes; they hurt real families and real businesses. Congratulations on this successful bust!",
+    "#pro4a #cppo4a Fake products often look convincing but carry real risks, from health hazards to financial loss. Thank you, PNP, for this successful operation that keeps our markets safer and more honest!",
+    "#pro4a #cppo4a This crackdown on smuggled and counterfeit goods is proof that the PNP's fight against crime extends beyond the streets and into the marketplace. Congratulations to everyone involved!",
+    "#pro4a #cppo4a Bawat operasyong tulad nito ay nagpoprotekta sa kabuhayan ng mga lehitimong negosyante na apektado ng hindi patas na kompetisyon mula sa mga smuggled na produkto. Salamat, PNP!",
+    "#pro4a #cppo4a This successful operation against smuggled goods protects not just the economy but also the trust that consumers place in the products they buy every day. Congratulations to the PNP!",
+    "#pro4a #cppo4a Smuggling syndicates rely on weak oversight, and operations like this prove that the PNP is closing every gap they try to exploit. Thank you for this important and successful crackdown!",
+    "#pro4a #cppo4a Patunay na ang ating PNP ay hindi titigil sa pagbantay laban sa mga ilegal na kalakal na pumapasok sa ating bansa. Saludo sa inyong tapang at dedikasyon sa operasyong ito!",
+    "#pro4a #cppo4a This operation against counterfeit and smuggled products is a win for every honest business owner trying to make a living the right way. Congratulations to the PNP on this success!",
+    "#pro4a #cppo4a Every seized container of smuggled goods represents protected jobs, protected consumers, and a stronger local economy. Thank you, PNP, for your continued commitment to fighting this kind of crime!",
+    "#pro4a #cppo4a This is exactly the kind of operation that shows the PNP's reach extends from the streets to the ports and marketplaces of our economy. Congratulations to everyone behind this success!",
+    "#pro4a #cppo4a Salamat sa inyong walang humpay na pagbabantay laban sa smuggling at pagbebenta ng peke na produkto. Patuloy ninyong protektahan ang interes ng bawat Pilipino mamimili at negosyante!",
+    "#pro4a #cppo4a Fake and smuggled goods cost the country billions in lost revenue every year, and operations like this are a meaningful step toward stopping that bleeding. Congratulations to the PNP!",
+    "#pro4a #cppo4a This successful operation proves that protecting Filipino consumers from fraud and unsafe products is just as much a priority for the PNP as any other form of public safety. Well done!",
+    "#pro4a #cppo4a Bawat matagumpay na pag-sugpo sa smuggling at peke na produkto ay nagpapalakas ng tiwala ng publiko sa ating mga institusyon. Maraming salamat sa inyong serbisyo, PNP!",
+    "#pro4a #cppo4a This operation against smuggled and counterfeit goods reflects a police force that understands crime comes in many forms, and is ready to fight all of them. Congratulations to the team!"
+  ],
+
+  hviWantedOps: [
+    "#pro4a #cppo4a Another high-value target off the streets! Congratulations to the PNP for this successful pursuit and arrest, making our communities measurably safer with every wanted individual brought to justice!",
+    "#pro4a #cppo4a The relentless pursuit of wanted persons shows that no one is beyond the reach of the law when the PNP is determined to deliver justice. Congratulations on this successful operation!",
+    "#pro4a #cppo4a This is what justice looks like in action: patience, intelligence, and the courage to bring high-value individuals to face accountability. Congratulations to everyone involved in this successful pursuit!",
+    "#pro4a #cppo4a Patuloy na ipinapakita ng PNP na walang takas sa batas, kahit pa ang mga pinaka-wanted na indibidwal. Saludo sa matagumpay na operasyong ito at sa inyong determinasyon na maghatid ng hustisya!",
+    "#pro4a #cppo4a Every wanted person captured is one less threat roaming free in our communities. Congratulations to the PNP on this successful operation and thank you for your relentless pursuit of justice!",
+    "#pro4a #cppo4a This successful pursuit proves that hiding from the law is never truly an option, no matter how long it takes or how far someone runs. Congratulations to the entire team involved!",
+    "#pro4a #cppo4a Salamat sa inyong walang tigil na paghahanap sa mga wanted persons na nagtatago mula sa batas. Ang tagumpay na ito ay tagumpay din ng bawat komunidad na ninanais ng kapayapaan!",
+    "#pro4a #cppo4a High-value individuals do not get to evade justice forever, and this successful operation proves exactly that. Congratulations to the PNP for their persistence and dedication in bringing this case to a close!",
+    "#pro4a #cppo4a This arrest represents months, possibly years, of careful investigation and unwavering resolve to bring a long-wanted individual to justice. Magaling at maraming salamat sa inyong serbisyo, PNP!",
+    "#pro4a #cppo4a The successful capture of a high-value individual reminds every Filipino that the PNP never stops working, even on cases that take a long time to resolve. Congratulations on this achievement!",
+    "#pro4a #cppo4a Patunay na hindi nakakatakas sa batas kahit gaano katagal magtago ang isang wanted individual. Saludo sa pasensya at determinasyon ng PNP sa pagkumpleto ng operasyong ito!",
+    "#pro4a #cppo4a This successful pursuit and arrest sends a powerful message to other wanted persons: the PNP does not give up, and justice always catches up eventually. Congratulations to the team involved!",
+    "#pro4a #cppo4a Every high-value target captured is a victory for the families and communities who have waited a long time to see justice finally served. Thank you, PNP, for this successful operation!",
+    "#pro4a #cppo4a This operation shows the kind of relentless investigative work that goes into tracking down a wanted individual who thought they could stay hidden forever. Congratulations to the PNP team!",
+    "#pro4a #cppo4a Salamat sa inyong pagsisikap na hanapin at dakpin ang mga taong matagal na nagtatago mula sa batas. Ang bawat operasyong ito ay nagbibigay ng pag-asa sa mga biktima na naghihintay ng hustisya!",
+    "#pro4a #cppo4a The successful pursuit of this high-value individual is proof that the PNP's intelligence and surveillance capabilities continue to improve and deliver real results. Congratulations on this achievement!",
+    "#pro4a #cppo4a This is the kind of patient, methodical police work that rarely makes headlines until the moment of arrest, but matters every single day it is happening. Congratulations to the PNP!",
+    "#pro4a #cppo4a Wanted individuals often think distance and time will protect them, but this successful operation proves that the PNP's reach and memory are both long. Congratulations to everyone involved!",
+    "#pro4a #cppo4a Patuloy na pinapatunayan ng PNP na walang lugar na ligtas para sa mga wanted persons na umiiwas sa batas. Saludo sa inyong tagumpay sa operasyong ito laban sa kawalan ng katarungan!",
+    "#pro4a #cppo4a This successful capture closes a long-standing case and brings a measure of closure to victims and families who have waited far too long for justice. Congratulations to the PNP team!",
+    "#pro4a #cppo4a Every high-value individual taken off the streets through operations like this makes our communities a little safer and a little more hopeful. Thank you, PNP, for your continued dedication!",
+    "#pro4a #cppo4a This operation reflects the kind of coordinated, cross-unit effort it often takes to finally locate and arrest someone who has evaded the law for years. Congratulations on this success!",
+    "#pro4a #cppo4a Salamat sa inyong determinasyon na hanapin ang katarungan kahit ilang taon pa ito tumagal. Ang pagkadakip sa wanted individual na ito ay tagumpay para sa buong komunidad!",
+    "#pro4a #cppo4a This successful pursuit reminds every wanted person that time does not erase accountability, and the PNP's resolve only grows stronger with every passing case. Congratulations to all involved!",
+    "#pro4a #cppo4a The arrest of a high-value individual after a long pursuit is a powerful reminder that justice, though sometimes delayed, is rarely denied when the PNP is on the case. Well done!",
+    "#pro4a #cppo4a This operation is the result of careful coordination, credible intelligence, and officers who refused to let a wanted case go cold. Congratulations and thank you for this successful pursuit!",
+    "#pro4a #cppo4a Patunay na ang PNP ay laging nakatuon sa hustisya, kahit pa kailangan pang maghintay ng matagal upang makumpleto ang isang operasyon. Saludo sa inyong tagumpay laban sa wanted individual na ito!",
+    "#pro4a #cppo4a Every successful manhunt that ends in arrest restores a little more faith in the justice system for victims who have waited far too long for resolution. Congratulations to the PNP!",
+    "#pro4a #cppo4a This high-value pursuit operation shows exactly why patience and persistence remain some of the PNP's greatest strengths in the fight against crime. Congratulations to the entire team!",
+    "#pro4a #cppo4a Salamat sa inyong walang sawang paghahanap sa mga taong itinuturing na pinaka-wanted sa ating bansa. Bawat matagumpay na pagdakip ay nagdudulot ng kaligtasan sa ating mga komunidad!",
+    "#pro4a #cppo4a This operation proves that no matter how long someone manages to stay hidden, the PNP's commitment to justice never expires. Congratulations on this successful pursuit and capture!",
+    "#pro4a #cppo4a The successful arrest of this wanted individual is a testament to the dedication of every officer who worked tirelessly behind the scenes to make this moment possible. Congratulations, PNP!",
+    "#pro4a #cppo4a This pursuit operation reflects exactly the kind of relentless, behind-the-scenes investigative work that rarely gets noticed but always matters in the fight against crime. Well done, PNP!",
+    "#pro4a #cppo4a Patuloy na ipinapakita ng PNP na ang bawat wanted case ay seryoso nilang pinag-aralan at hinahabol hanggang sa makumpleto. Maraming salamat sa inyong dedikasyon at tagumpay!",
+    "#pro4a #cppo4a Every wanted individual successfully apprehended is proof that the PNP's resources and resolve are more than capable of closing even the most difficult cases. Congratulations to everyone involved!",
+    "#pro4a #cppo4a This successful operation closes the book on a case that has likely affected many lives, and finally delivers the accountability that victims and families deserve. Thank you, PNP!",
+    "#pro4a #cppo4a The pursuit and capture of high-value individuals require coordination across multiple units and unwavering focus on the part of every officer involved. Congratulations on this well-earned success!",
+    "#pro4a #cppo4a Salamat sa inyong serbisyo sa pagsugpo sa mga taong itinatakas ang kanilang sarili mula sa batas. Ang inyong tagumpay ay nagbibigay ng kapanatagan sa mga apektadong komunidad!",
+    "#pro4a #cppo4a This operation shows that being a wanted individual in the Philippines means living with the constant knowledge that the PNP never truly stops looking. Congratulations to the team behind this arrest!",
+    "#pro4a #cppo4a Every successful pursuit of a high-value individual reinforces the simple truth that justice may take time, but it always finds its way home. Congratulations to the PNP on this achievement!"
   ]
+
 };
 
 const topicIcons = {
   achievements: '🏆', goodDeeds: '❤️', communityReminders: '📢',
   successfulOps: '🚔', goodNews: '📰', pressBriefing: '🎙️',
   awards: '🎖️', congratulations: '🎉', flagRaising: '🇵🇭',
-  mourning: '🕊️', cyberScam: '🔐'
+  mourning: '🕊️', cyberScam: '🔐',
+  drugOps: '💊', smuggledFakeOps: '📦', hviWantedOps: '🎯'
 };
 
 const PAGE_SIZE = 10;
@@ -931,8 +1175,9 @@ function renderPage(topic, data, icon) {
   list.innerHTML = pageItems.map((text, localI) => {
     const globalIndex = startIdx + localI;
     const wasCopied = copiedSet.has(globalIndex);
+    const delay = (localI * 0.04).toFixed(2);
     return `
-    <div class="comment-card${wasCopied ? ' was-copied' : ''}" onclick="copyComment(this, ${globalIndex})" data-text="${text.replace(/"/g, '&quot;')}" data-topic="${topic}">
+    <div class="comment-card${wasCopied ? ' was-copied' : ''}" style="animation-delay: ${delay}s" onclick="copyComment(this, ${globalIndex})" data-text="${text.replace(/"/g, '&quot;')}" data-topic="${topic}">
       <div class="card-icon" id="icon-${globalIndex}">${icon}</div>
       <div class="card-text">${text}</div>
       <span class="already-copied-badge" id="badge-${globalIndex}">✓ Copied</span>
@@ -1059,6 +1304,24 @@ function showCopied(card, index, topic) {
     iconEl.textContent = origIcon;
     if (labelEl) labelEl.textContent = 'TAP TO COPY AGAIN';
   }, 2500);
+}
+
+// --- GO TO TOP BUTTON ---
+const goTopBtn = document.getElementById('goTopBtn');
+
+function updateGoTopVisibility() {
+  if (window.scrollY > 320) {
+    goTopBtn.classList.add('visible');
+  } else {
+    goTopBtn.classList.remove('visible');
+  }
+}
+
+window.addEventListener('scroll', updateGoTopVisibility, { passive: true });
+updateGoTopVisibility();
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 </body>
