@@ -464,8 +464,15 @@
   <div class="select-wrapper">
     <select id="topicSelect" onchange="loadComments()">
       <option value="">— Choose a Topic —</option>
+      <option value="fakeBookingComments">📰 Fake Booking</option>
+      <option value="schoolSafetyComments">📰 School Safety</option>
+      <option value="childExploitationComments">📰 Child Exploitation</option>
+      <option value="generalPNPComments">🏆 PNP General Comments</option>
+      <option value="courtesyCallComments">📞 Courtesy Calls</option>
       <option value="achievements">🏆 PNP Achievements</option>
       <option value="goodDeeds">❤️ PNP Good Deeds</option>
+      <option value="faithComments">🎯 FAITH:ON</option>
+      <option value="shooting">🎯 Shooting</option>
       <option value="communityReminders">📢 Community Reminders</option>
       <option value="successfulOps">🚔 Successful Operations</option>
       <option value="goodNews">📰 Good News</option>
@@ -502,6 +509,195 @@
 
 <script>
 const comments = {
+  
+  childExploitationComments: [
+  // PROTECTION OF CHILDREN (1-10)
+  "#pro4a #cppo4a Thank you for protecting children from exploitation and abuse.",
+  "#pro4a #cppo4a Every child deserves a safe and nurturing environment.",
+  "#pro4a #cppo4a Salute to our authorities for safeguarding the welfare of minors.",
+  "#pro4a #cppo4a Children should be protected, not exploited.",
+  "#pro4a #cppo4a Thank you for standing up for the rights of every child.",
+  "#pro4a #cppo4a Protecting children is a responsibility shared by all.",
+  "#pro4a #cppo4a Every child deserves love, care, and protection.",
+  "#pro4a #cppo4a Thank you for ensuring the safety and well-being of our youth.",
+  "#pro4a #cppo4a Strong communities begin with protecting our children.",
+  "#pro4a #cppo4a Let us continue to safeguard the future of our young generation.",
+
+  // APPRECIATION FOR OPERATIONS (11-20)
+  "#pro4a #cppo4a Salute to the successful operations against child exploitation.",
+  "#pro4a #cppo4a Thank you for your dedication in protecting vulnerable children.",
+  "#pro4a #cppo4a Justice must prevail against those who prey on minors.",
+  "#pro4a #cppo4a Excellent work in combating crimes against children.",
+  "#pro4a #cppo4a Saludo sa matagumpay na operasyon laban sa pang-aabuso sa kabataan.",
+  "#pro4a #cppo4a Your commitment to protecting children is truly commendable.",
+  "#pro4a #cppo4a Thank you for bringing offenders to justice.",
+  "#pro4a #cppo4a No child should ever become a victim of exploitation.",
+  "#pro4a #cppo4a Keep up the good work in defending the innocent.",
+  "#pro4a #cppo4a Protecting children is one of the noblest forms of public service.",
+
+  // JUSTICE AND ACCOUNTABILITY (21-30)
+  "#pro4a #cppo4a Crimes against children must never go unpunished.",
+  "#pro4a #cppo4a Justice and protection should always go hand in hand.",
+  "#pro4a #cppo4a Thank you for ensuring accountability for those who exploit children.",
+  "#pro4a #cppo4a Let us stand united against all forms of child abuse.",
+  "#pro4a #cppo4a Every rescued child is a victory for humanity.",
+  "#pro4a #cppo4a Children deserve a future free from fear and exploitation.",
+  "#pro4a #cppo4a Awareness and vigilance help protect the most vulnerable.",
+  "#pro4a #cppo4a Salute to everyone working tirelessly to protect children.",
+  "#pro4a #cppo4a A safer society begins with defending our youth.",
+  "#pro4a #cppo4a Together we can create a safer world for every child.",
+
+  // COMMUNITY SUPPORT AND ADVOCACY (31-40)
+  "#pro4a #cppo4a Thank you for championing the rights and welfare of children.",
+  "#pro4a #cppo4a Communities must remain vigilant against child exploitation.",
+  "#pro4a #cppo4a Awareness and cooperation are key to protecting children.",
+  "#pro4a #cppo4a Every child deserves dignity, safety, and hope.",
+  "#pro4a #cppo4a Let us continue supporting efforts to end child abuse.",
+  "#pro4a #cppo4a Thank you for giving vulnerable children a chance at a brighter future.",
+  "#pro4a #cppo4a Children are our future and must always be protected.",
+  "#pro4a #cppo4a Together we can stop crimes that harm innocent lives.",
+  "#pro4a #cppo4a Saludo sa walang sawang paglaban para sa kapakanan ng kabataan.",
+  "#pro4a #cppo4a Thank you for ensuring that every child has the opportunity to grow up safely and with dignity."
+  ],
+  schoolSafetyComments: [
+  // SCHOOL SAFETY AND PEACE (1-10)
+  "#pro4a #cppo4a Every child deserves to learn in a safe and peaceful environment.",
+  "#pro4a #cppo4a Schools should always be places of learning, not fear.",
+  "#pro4a #cppo4a Thank you for promoting safety and security in our schools.",
+  "#pro4a #cppo4a A safe school environment helps students thrive and succeed.",
+  "#pro4a #cppo4a Let us all work together to keep our schools peaceful.",
+  "#pro4a #cppo4a School safety is everyone's responsibility.",
+  "#pro4a #cppo4a Thank you for reminding everyone to prioritize student welfare.",
+  "#pro4a #cppo4a Peace and security should always prevail in our schools.",
+  "#pro4a #cppo4a Students deserve to feel safe every day they attend school.",
+  "#pro4a #cppo4a Strong communities begin with safe schools.",
+
+  // ANTI-BULLYING AWARENESS (11-20)
+  "#pro4a #cppo4a Bullying has no place in our schools and communities.",
+  "#pro4a #cppo4a Kindness and respect can make a difference in every student's life.",
+  "#pro4a #cppo4a Let us encourage empathy and understanding among our youth.",
+  "#pro4a #cppo4a Speak up against bullying and support one another.",
+  "#pro4a #cppo4a Every student deserves respect and acceptance.",
+  "#pro4a #cppo4a Together we can build a culture of kindness and compassion.",
+  "#pro4a #cppo4a Thank you for promoting awareness against bullying.",
+  "#pro4a #cppo4a Let us create schools where everyone feels valued and safe.",
+  "#pro4a #cppo4a Bullying prevention starts with awareness and understanding.",
+  "#pro4a #cppo4a Respect and compassion make schools better for everyone.",
+
+  // COMMUNITY INVOLVEMENT (21-30)
+  "#pro4a #cppo4a Parents, schools, and communities must work together for student safety.",
+  "#pro4a #cppo4a Open communication helps prevent violence and conflict.",
+  "#pro4a #cppo4a Thank you for strengthening partnerships for safer schools.",
+  "#pro4a #cppo4a Protecting our children requires everyone's cooperation.",
+  "#pro4a #cppo4a Awareness and vigilance help keep schools secure.",
+  "#pro4a #cppo4a Let us continue fostering positive environments for students.",
+  "#pro4a #cppo4a Safety begins with care, understanding, and cooperation.",
+  "#pro4a #cppo4a Communities play a vital role in protecting our youth.",
+  "#pro4a #cppo4a Together we can create a brighter and safer future for students.",
+  "#pro4a #cppo4a Thank you for promoting peace and unity in our schools.",
+
+  // SCHOOL SHOOTING AWARENESS AND PREVENTION (31-40)
+  "#pro4a #cppo4a May our schools remain sanctuaries of learning and hope.",
+  "#pro4a #cppo4a Violence should never overshadow education and growth.",
+  "#pro4a #cppo4a Praying for peace and safety in every educational institution.",
+  "#pro4a #cppo4a Awareness and early intervention can help prevent tragedies.",
+  "#pro4a #cppo4a Thank you for reminding everyone to remain vigilant and responsible.",
+  "#pro4a #cppo4a Safe schools help nurture confident and successful students.",
+  "#pro4a #cppo4a Let us stand united in protecting our children from violence.",
+  "#pro4a #cppo4a May peace, understanding, and compassion guide our youth.",
+  "#pro4a #cppo4a Education flourishes best in safe and supportive environments.",
+  "#pro4a #cppo4a Together, we can ensure that schools remain places of hope and opportunity."
+  ],
+  fakeBookingComments: [
+  // AWARENESS AND VIGILANCE (1-10)
+  "#pro4a #cppo4a Thank you for raising awareness against fake booking scams.",
+  "#pro4a #cppo4a Stay vigilant and always verify transactions before proceeding.",
+  "#pro4a #cppo4a Public awareness is key in preventing online fraud.",
+  "#pro4a #cppo4a Salute to our authorities for protecting the public from scammers.",
+  "#pro4a #cppo4a Scammers have no place in our communities.",
+  "#pro4a #cppo4a Thank you for keeping the public informed and aware.",
+  "#pro4a #cppo4a Awareness and caution can save people from becoming victims.",
+  "#pro4a #cppo4a Stay alert and report suspicious activities immediately.",
+  "#pro4a #cppo4a Together we can stop fraudulent schemes.",
+  "#pro4a #cppo4a Continuous information drives help prevent scams.",
+
+  // APPRECIATION FOR LAW ENFORCEMENT (11-20)
+  "#pro4a #cppo4a Great job in protecting hardworking citizens from deception.",
+  "#pro4a #cppo4a Thank you for taking action against individuals behind fake bookings.",
+  "#pro4a #cppo4a Saludo sa mabilis na aksyon laban sa mga mapanlinlang na gawain.",
+  "#pro4a #cppo4a Keep up the good work in combating online fraud.",
+  "#pro4a #cppo4a Thank you for ensuring justice against scammers.",
+  "#pro4a #cppo4a Your efforts help protect businesses and delivery riders.",
+  "#pro4a #cppo4a Excellent work in promoting safe transactions.",
+  "#pro4a #cppo4a Fraudsters must be held accountable for their actions.",
+  "#pro4a #cppo4a Salute to the men and women working against cyber-enabled crimes.",
+  "#pro4a #cppo4a Thank you for safeguarding the welfare of the public.",
+
+  // COMMUNITY SAFETY (21-30)
+  "#pro4a #cppo4a Let us all remain cautious and responsible online users.",
+  "#pro4a #cppo4a Prevention starts with awareness and cooperation.",
+  "#pro4a #cppo4a Online safety is everyone's responsibility.",
+  "#pro4a #cppo4a Let us continue supporting campaigns against fraud.",
+  "#pro4a #cppo4a Stay informed and never trust suspicious requests.",
+  "#pro4a #cppo4a Awareness campaigns help create safer communities.",
+  "#pro4a #cppo4a Thank you for reminding everyone to think before they click.",
+  "#pro4a #cppo4a Together we can reduce online scams and fraud.",
+  "#pro4a #cppo4a Responsible digital practices protect everyone.",
+  "#pro4a #cppo4a Stay cautious and encourage others to do the same.",
+
+  // SUPPORT AND PREVENTION (31-40)
+  "#pro4a #cppo4a Education and awareness are powerful tools against scammers.",
+  "#pro4a #cppo4a Keep exposing fraudulent activities and protecting the public.",
+  "#pro4a #cppo4a Thank you for promoting responsible online transactions.",
+  "#pro4a #cppo4a Let us stand united against all forms of fraud.",
+  "#pro4a #cppo4a Safety begins with awareness and vigilance.",
+  "#pro4a #cppo4a Saludo sa patuloy na kampanya laban sa panloloko.",
+  "#pro4a #cppo4a May everyone remain vigilant against online deception.",
+  "#pro4a #cppo4a Keep spreading awareness and protecting communities.",
+  "#pro4a #cppo4a A vigilant public is the best defense against scams.",
+  "#pro4a #cppo4a Thank you for strengthening public awareness and security."
+  ],
+  shooting: [
+  "#pro4a #cppo4a Praying for justice and healing for the victims and their families.",
+
+  "#pro4a #cppo4a Salute to our police for their swift response and commitment to public safety.",
+
+  "#pro4a #cppo4a May truth and justice prevail. Prayers for everyone affected.",
+
+  "#pro4a #cppo4a Thank you for acting promptly and ensuring a thorough investigation.",
+
+  "#pro4a #cppo4a Hoping for peace and safety in all schools across the country.",
+
+  "#pro4a #cppo4a Condolences to the bereaved families. Stay strong.",
+
+  "#pro4a #cppo4a Thank you for your continued efforts to protect our communities.",
+
+  "#pro4a #cppo4a Praying for the fast recovery of those who were injured.",
+
+  "#pro4a #cppo4a May our schools remain safe spaces for learning and growth.",
+
+  "#pro4a #cppo4a Saludo sa agarang aksyon at dedikasyon ng ating kapulisan.",
+
+  "#pro4a #cppo4a Justice must be served. Thank you for your vigilance.",
+
+  "#pro4a #cppo4a We appreciate the efforts of the PNP in maintaining peace and order.",
+
+  "#pro4a #cppo4a Keeping the victims and their families in our prayers.",
+
+  "#pro4a #cppo4a Thank you for standing firm in protecting our children.",
+
+  "#pro4a #cppo4a Hoping for a peaceful resolution and lasting security for all.",
+
+  "#pro4a #cppo4a Your dedication to public service is truly appreciated.",
+
+  "#pro4a #cppo4a Prayers for comfort and strength for the affected families.",
+
+  "#pro4a #cppo4a Thank you for ensuring that justice is pursued with integrity.",
+
+  "#pro4a #cppo4a United in prayer for peace, safety, and justice.",
+
+  "#pro4a #cppo4a Salute to the men and women in uniform for their commitment to serve."
+  ],
   achievements: [
     "#pro4a #cppo4a This is what consistent hard work and dedication look like when they finally pay off. The PNP continues to prove that every effort made in the name of public safety is always worth it. Proud of our police force!",
     "#pro4a #cppo4a Achievements like this do not come easy. They are the result of sleepless nights, sacrifice, and an unwavering commitment to serving every Filipino with excellence. Well done and congratulations, PNP!",
@@ -929,7 +1125,111 @@ const comments = {
     "#pro4a #cppo4a Walang hanggang pagmamahal ang naiwan kahit pumanaw na ang katawan. Lubos na pakikiramay sa buong pamilya sa oras ng kalungkutang ito.",
     "#pro4a #cppo4a Our prayers are with the family as they navigate this difficult season. May they be surrounded by comfort, love, and gentle support always.",
     "#pro4a #cppo4a The departed may be gone from sight, but never from the hearts of those who loved them. Our condolences to the grieving family today.",
-    "#pro4a #cppo4a May the family find peace in knowing that the love their departed loved one gave will continue to live on. Our deepest sympathies and prayers."
+    "#pro4a #cppo4a May the family find peace in knowing that the love their departed loved one gave will continue to live on. Our deepest sympathies and prayers.",
+  // COMFORT AND PEACE (1-10)
+  "#pro4a #cppo4a Our deepest condolences to the bereaved family. May the love that surrounds you during this difficult time be a source of comfort and strength as you navigate through the pain of this great loss. You are in our thoughts and prayers always.",
+
+  "#pro4a #cppo4a Words can never fully express the depth of sorrow we feel for your loss. Please know that you are not alone in your grief and that our thoughts, prayers, and heartfelt sympathies are with you and your family during this most difficult time.",
+
+  "#pro4a #cppo4a May the soul of the departed rest in eternal peace and may the family find the strength and comfort they need to carry on. Grief is the price we pay for love and that love will never fade. Our sincerest condolences to the bereaved family.",
+
+  "#pro4a #cppo4a In this time of sorrow, may you find peace in the beautiful memories you shared with your loved one. Those memories are a treasure that no one can ever take away. Our deepest sympathies are with you and your family always.",
+
+  "#pro4a #cppo4a Ang pagkawala ng isang mahal sa buhay ay isa sa pinakamabigat na bagay na kakaharapin ng sinuman. Sa pamilyang naulila, nawa ang Diyos ay yakapin kayo sa Kanyang walang hanggang awa at pagmamahal sa panahon ng inyong pagdadalamhati.",
+
+  "#pro4a #cppo4a Gone from our sight but never from our hearts. The love and memories you shared with the departed will forever remain a source of comfort and inspiration. Our heartfelt condolences to the family during this time of grief and loss.",
+
+  "#pro4a #cppo4a May the peace that surpasses all understanding guard your hearts and minds during this incredibly difficult time. Our sincerest condolences to the bereaved family. You are surrounded by love and you are never alone in your sorrow.",
+
+  "#pro4a #cppo4a To the grieving family, may you find solace in knowing that your loved one is now in a place of perfect peace and eternal rest. Our deepest sympathies are with you as you navigate through this painful journey of loss and healing.",
+
+  "#pro4a #cppo4a Nawa ang Panginoon ay magbigay sa inyong pamilya ng lakas at kapayapaan na kailangan ninyo sa panahon ng inyong pagdadalamhati. Ang aming mga panalangin at taos-pusong pakikiramay ay lagi ninyong kasama sa mahirap na panahong ito.",
+
+  "#pro4a #cppo4a There are no words powerful enough to ease the pain of losing someone you love but know that our hearts are with you every step of the way. May God's grace and comfort surround your family during this time of grief. Condolences po.",
+
+  // MEMORY AND LEGACY (11-20)
+  "#pro4a #cppo4a Those who leave us never truly go away. They live on in the love they gave, the lives they touched, and the beautiful memories they left behind. Our deepest condolences to the family. May the departed rest in eternal peace.",
+
+  "#pro4a #cppo4a A life well lived deserves to be remembered and honored. The legacy of your loved one will continue to live on in the hearts of everyone whose life they touched. Our sincerest condolences to the bereaved family during this time of loss.",
+
+  "#pro4a #cppo4a The greatest comfort in times of loss is knowing that the love shared with the departed never truly ends. It lives on in every memory, every smile, and every story told in their honor. Our heartfelt condolences to the grieving family.",
+
+  "#pro4a #cppo4a Ang mga taong iniwan tayo ay hindi kailanman tunay na nawawala. Sila ay nananatili sa bawat alaala, bawat ngiti, at bawat pagmamahal na kanilang iniwan sa ating mga puso. Nawa ang kaluluwa ng yumaong mahal ninyo ay mapahinga sa kapayapaan.",
+
+  "#pro4a #cppo4a Though the departed is no longer with us in person, the love they gave and the joy they brought will forever remain in the hearts of all who knew and loved them. Our deepest condolences to the family. May their soul rest in peace.",
+
+  "#pro4a #cppo4a A person's legacy is not measured by the years they lived but by the lives they touched and the love they left behind. Your loved one's legacy will endure forever. Our sincerest condolences to the bereaved family during this difficult time.",
+
+  "#pro4a #cppo4a The memories you made with your loved one are yours to keep forever. No amount of time or distance can ever erase the beautiful impact they had on your life and the lives of everyone around them. Our deepest sympathies to your family.",
+
+  "#pro4a #cppo4a Ang buhay ng ating mga mahal sa buhay na pumanaw ay patuloy na nabubuhay sa mga alaala at pagmamahal na kanilang iniwan sa atin. Nawa ang mga alaala ng magagandang sandali na inyong ibinahagi ay magbigay sa inyo ng kaginhawahan at lakas.",
+
+  "#pro4a #cppo4a What a beautiful life your loved one lived and what a beautiful legacy they leave behind. May the memories of their kindness, their laughter, and their love bring your family comfort and peace during this difficult time of grieving.",
+
+  "#pro4a #cppo4a The footprints left by our loved ones in our hearts can never be washed away by time or tears. They remain with us forever as a reminder of the love that was shared. Our heartfelt condolences to the family during this time of loss.",
+
+  // STRENGTH AND HEALING (21-30)
+  "#pro4a #cppo4a Grief is the deepest expression of love and the pain you feel right now is a testament to how deeply you loved the one you lost. May God give you the strength to face each day and the peace to find healing in His perfect time.",
+
+  "#pro4a #cppo4a Healing takes time and it is okay to grieve. Allow yourself to feel the pain, to remember, and to lean on those around you for support. Our thoughts and prayers are with your family as you walk through this difficult journey of loss.",
+
+  "#pro4a #cppo4a Nawa ang Diyos ay bigyan kayo ng lakas na harapin ang bawat araw na may pag-asa at kapayapaan sa inyong puso. Hindi madaling tanggapin ang pagkawala ngunit alam naming ang Kanyang pagmamahal ay laging naroroon upang suportahan kayo sa bawat hakbang.",
+
+  "#pro4a #cppo4a In the darkest moments of grief, may you find the light of God's love and the warmth of the people around you to guide you through. Our sincerest condolences to the bereaved family. May healing come gently and surely in time.",
+
+  "#pro4a #cppo4a Grief does not have a timeline and healing does not happen overnight. Be gentle with yourself and know that it is okay to take all the time you need. Our hearts are with you and your family during this most difficult season of loss.",
+
+  "#pro4a #cppo4a May God wrap your family in His loving arms and give you the supernatural strength and peace that only He can provide during this time of deep sorrow and loss. Our sincerest condolences and warmest prayers are with you always.",
+
+  "#pro4a #cppo4a Ang pagdadalamhati ay bahagi ng pagmamahal at walang mali sa pagpapalabas ng iyong kalungkutan. Nawa ang inyong pamilya ay makahanap ng lakas sa isa't isa at sa pagmamahal ng mga taong nakapaligid sa inyo sa panahong ito ng pighati.",
+
+  "#pro4a #cppo4a Though the road ahead may seem difficult and the pain may feel overwhelming, know that you have the strength within you to carry on. Your loved one would want you to find peace and healing. Our deepest condolences to your family.",
+
+  "#pro4a #cppo4a May each new day bring your family a little more peace, a little more comfort, and a little more strength to face the world without your loved one by your side. Our thoughts and prayers are always with you during this time of healing.",
+
+  "#pro4a #cppo4a Healing from loss is a journey that takes time and grace. May God's presence be your comfort, His word be your strength, and the love of those around you be the light that guides you through the darkest days. Condolences to your family.",
+
+  // FAITH AND HOPE (31-40)
+  "#pro4a #cppo4a In the arms of God there is perfect peace and perfect rest. May the knowledge that your loved one is now free from pain and at peace in His presence bring your family some comfort during this time of grief and loss. Condolences po.",
+
+  "#pro4a #cppo4a Faith reminds us that death is not the end but a new beginning in the presence of God. May this hope be a source of comfort and peace for your family as you mourn the loss of your beloved. Our deepest condolences are with you.",
+
+  "#pro4a #cppo4a Nawa ang pananampalataya ay magbigay sa inyong pamilya ng kapayapaan na higit sa lahat ng pag-unawa sa panahon ng inyong pagdadalamhati. Ang Diyos ay laging nariyan upang alagaan at yakapin kayo sa inyong pinakamasakit na sandali.",
+
+  "#pro4a #cppo4a There is a place where there is no more pain, no more tears, and no more sorrow and we believe your loved one is there now. May this hope bring your family comfort and peace as you grieve and remember the one you love so dearly.",
+
+  "#pro4a #cppo4a God sees your tears, hears your prayers, and feels your pain. He is close to the brokenhearted and He will never leave you to grieve alone. Our sincerest condolences to the bereaved family. May His peace guard your hearts always.",
+
+  "#pro4a #cppo4a Ang Diyos ay hindi kailanman nagpapabayaan sa mga may pusong nasasagatan at nalulungkot. Siya ay laging nariyan upang bigyan kayo ng lakas at kaginhawahan. Nawa ang Kanyang presensya ay maramdaman ng inyong pamilya sa panahon ng inyong pagdadalamhati.",
+
+  "#pro4a #cppo4a May your faith be the anchor that holds you steady through the storm of grief and loss. God is faithful and He will bring you through this difficult season stronger and more at peace than you were before. Our deepest condolences to your family.",
+
+  "#pro4a #cppo4a The tears we cry for those we lose are sacred and God collects every single one of them. He sees your pain and He cares deeply for your family. May His comfort and peace be with you every moment of every day as you grieve.",
+
+  "#pro4a #cppo4a Nawa ang pag-asa na dulot ng pananampalataya ay maging liwanag sa kadiliman ng inyong pagdadalamhati. Ang Diyos ay may magandang plano para sa bawat isa sa atin at ang Kanyang pagmamahal ay hindi kailanman nagbabago kahit sa pinakamasakit na sandali.",
+
+  "#pro4a #cppo4a We grieve with hope, knowing that love is eternal and that those who leave us are never truly far away. May this hope bring your family peace and comfort as you navigate through the pain of this loss. Our sincerest condolences always.",
+
+  // TOGETHERNESS AND SUPPORT (41-50)
+  "#pro4a #cppo4a You do not have to walk through this grief alone. Lean on those around you, accept the love and support being offered, and know that there are many hearts carrying this burden with you. Our deepest condolences to the bereaved family.",
+
+  "#pro4a #cppo4a In times of loss, the presence of people who care can make all the difference. Please know that you are surrounded by love and support during this difficult time. Our sincerest condolences to the family. You are never alone in your grief.",
+
+  "#pro4a #cppo4a Sa panahon ng pagdadalamhati, ang presensya ng mga taong nagmamahal sa inyo ay isa sa pinakamagandang kaginhawahan na maaaring matanggap. Nawa ang inyong pamilya ay maramdaman ang pagmamahal at suporta ng lahat ng nakapaligid sa inyo.",
+
+  "#pro4a #cppo4a Grief is easier to bear when it is shared with those who love you. May your family find comfort in each other and in the support of the people around you as you mourn the loss of your beloved. Our deepest condolences are with you always.",
+
+  "#pro4a #cppo4a We may not always know the right words to say in times of grief but we want you to know that our hearts are with you, our prayers are for you, and our love surrounds you and your family during this most difficult time. Condolences po.",
+
+  "#pro4a #cppo4a To the bereaved family, you are not alone in your sorrow. There are many people who share in your grief, who pray for your healing, and who are ready to walk alongside you through this painful journey. Our sincerest condolences always.",
+
+  "#pro4a #cppo4a Ang pagmamahal ng mga taong nakapaligid sa inyo ay isa sa pinakamalakas na bagay sa panahon ng pagdadalamhati. Nawa matanggap ninyo ang pagmamahal at suporta ng inyong mga mahal sa buhay at mga kaibigan habang kayo ay nagdurusa at nagpapagaling.",
+
+  "#pro4a #cppo4a No one should have to grieve alone and you do not have to. Accept the love, the prayers, and the support of those around you and know that you are never truly alone in your pain. Our heartfelt condolences to the bereaved family.",
+
+  "#pro4a #cppo4a May the love of family, the comfort of friends, and the peace of God be with you and your family during this time of loss. You are surrounded by people who care deeply for you and who are praying for your healing and peace. Condolences.",
+
+  "#pro4a #cppo4a To the family who is grieving, please know that your pain is shared by many who love and care for you deeply. You are in our thoughts and prayers and we are here for you every step of the way. Our deepest condolences always."
   ],
 
   cyberScam: [
@@ -1102,7 +1402,281 @@ const comments = {
     "#pro4a #cppo4a Salamat sa inyong serbisyo sa pagsugpo sa mga taong itinatakas ang kanilang sarili mula sa batas. Ang inyong tagumpay ay nagbibigay ng kapanatagan sa mga apektadong komunidad!",
     "#pro4a #cppo4a This operation shows that being a wanted individual in the Philippines means living with the constant knowledge that the PNP never truly stops looking. Congratulations to the team behind this arrest!",
     "#pro4a #cppo4a Every successful pursuit of a high-value individual reinforces the simple truth that justice may take time, but it always finds its way home. Congratulations to the PNP on this achievement!"
-  ]
+  ],
+  faithComments: [
+  "#pro4a #cppo4a Every Sunday is a reminder that the greatest source of strength for our PNP family is not found in weapons or tactics but in the unwavering faith that God is always with them. Thank you for this beautiful blessing. Amen!",
+
+  "#pro4a #cppo4a A heart that prays is a heart that is prepared for anything. May every member of our PNP family carry this Sunday blessing into the week ahead and face every challenge with courage, faith, and God's grace. Amen po!",
+
+  "#pro4a #cppo4a Salamat sa magandang mensahe ngayong Linggo! Ang pananampalatayang ito ang nagbibigay sa ating mga pulis ng lakas na harapin ang bawat araw na may tapang at pagmamahal sa kapwa. Nawa ang Diyos ay laging nasa piling ng ating PNP family!",
+
+  "#pro4a #cppo4a God does not call the equipped, He equips the called. And our PNP family answers that call every single day with faith, courage, and genuine love for every Filipino. Thank you for this uplifting Sunday message. God bless our PNP!",
+
+  "#pro4a #cppo4a There is power in prayer and the PNP knows this well. May this Sunday blessing fill every officer's heart with renewed strength, deeper faith, and the peace that only God can give as they prepare for another week of service. Amen!",
+
+  "#pro4a #cppo4a To our police family — you are never alone in your mission. God walks beside you in every patrol, every operation, and every moment of doubt. Hold on to your faith and know that His protection is always upon you. Blessed Sunday po!",
+
+  "#pro4a #cppo4a Ang isang pulis na may pananampalataya ay isang pulis na may lakas na higit pa sa kanyang sarili. Salamat sa pagpapalang ito ngayong Linggo at nawa ang Diyos ay ipagpatuloy ang Kanyang gabay at proteksyon sa buong PNP family. Amen!",
+
+  "#pro4a #cppo4a Faith reminds us that even in the most difficult moments of service, we are held by hands far greater than our own. May this Sunday blessing bring peace and renewed purpose to every member of our PNP family. Have a blessed week ahead!",
+
+  "#pro4a #cppo4a What a wonderful way to begin the week — with a prayer, a blessing, and a reminder that God is in control. May our PNP family carry this faith into every duty they perform and every life they touch this week. Amen po!",
+
+  "#pro4a #cppo4a The uniform protects the body but faith protects the soul. Thank you for this beautiful Sunday message that reminds our police family that spiritual strength is just as important as physical readiness. God bless the entire PNP family!",
+
+  "#pro4a #cppo4a Maligayang Linggo sa buong PNP family! Nawa ang pagpapalang ito mula sa Simbahan ay magbigay sa ating mga pulis ng bagong lakas, bagong pag-asa, at bagong determinasyon na maglingkod sa bawat Pilipino nang may puso at pananampalataya!",
+
+  "#pro4a #cppo4a In a world full of uncertainty, faith is our anchor. May every member of our PNP family hold on to their faith tightly as they navigate the challenges of their noble duty. Thank you for this Sunday blessing. God is with you always!",
+
+  "#pro4a #cppo4a A blessed officer is an effective officer. May the grace of God that covers our PNP family this Sunday follow them through every shift, every patrol, and every moment of service throughout the week. Amen and have a great week ahead!",
+
+  "#pro4a #cppo4a Sundays are for rest, reflection, and renewal of faith. May this blessing from the Church give our police family the spiritual nourishment they need to face another week of service with courage, compassion, and unwavering dedication. God bless po!",
+
+  "#pro4a #cppo4a Ang Diyos ay hindi kailanman nagpapabayaan sa mga naglilingkod sa kanilang kapwa nang may katapatan at pagmamahal. Sa ating buong PNP family, alam ninyong ang Kanyang proteksyon ay laging nasa inyo. Maligayang Linggo at Amen!",
+
+  "#pro4a #cppo4a To serve and protect is a calling that requires more than just skill and training. It requires faith. Thank you for this Sunday message that reminds our PNP family to always lean on God as they carry out their noble mission every day!",
+
+  "#pro4a #cppo4a May the prayers offered for our PNP family this Sunday reach the heart of God and return as blessings, protection, and strength for every officer in the field. You are all in our prayers always. Have a safe and blessed week ahead!",
+
+  "#pro4a #cppo4a Faith does not make things easy but it makes them possible. May our PNP family face every challenge this week knowing that God goes before them, stands beside them, and watches over them in everything they do. Amen po!",
+
+  "#pro4a #cppo4a Salamat sa patuloy na pagpapalang dulot ng Simbahan sa ating buong PNP family tuwing Linggo. Ang mga panalanging ito ay nagsisilbing baluti ng ating mga pulis sa bawat hamon ng kanilang tungkulin. Nawa ang Diyos ay laging kasamang sa inyo. Amen!",
+
+  "#pro4a #cppo4a A Sunday blessing is a reminder that behind every brave police officer is a God who cares deeply for them and their families. May our PNP family feel that love and protection in a real and powerful way this week. God bless you all!",
+
+  "#pro4a #cppo4a When faith leads the way, even the most dangerous roads become bearable. May every member of our PNP family walk into this new week with their faith strong, their hearts steady, and God's protection surrounding them always. Blessed Linggo po!",
+
+  "#pro4a #cppo4a Ang lakas ng ating mga pulis ay hindi lamang galing sa kanilang katawan at pagsasanay kundi mula rin sa kanilang pananampalataya sa Diyos na laging nagbabantay sa kanila. Salamat sa magandang Sunday blessing na ito para sa ating PNP family!",
+
+  "#pro4a #cppo4a May this Sunday blessing be a powerful reminder to every PNP officer that their service is not in vain and that God sees and honors every sacrifice they make for the sake of others. You are all appreciated and deeply prayed for. Amen!",
+
+  "#pro4a #cppo4a Faith, courage, and service — these are the three pillars that define our PNP family. Thank you for this uplifting Sunday message that strengthens all three and prepares our police force for another week of meaningful and dedicated service to every Filipino!",
+
+  "#pro4a #cppo4a Nawa ang pagpapalang ito ngayong Linggo ay maging sandata ng ating mga pulis laban sa lahat ng panganib at hamon na kanilang haharapin sa linggong ito. Ang Diyos ay laging kasama ninyo sa bawat hakbang ng inyong serbisyo. Amen po!",
+
+  "#pro4a #cppo4a A police officer with faith is a police officer with peace — peace that surpasses all understanding even in the most difficult and dangerous situations. May our PNP family always carry that peace with them wherever their duty takes them. God bless!",
+
+  "#pro4a #cppo4a Sundays remind us that no matter how heavy the week has been, God's grace is always sufficient and His strength is made perfect in our weakness. May our PNP family find that grace and strength in abundance this week. Maliwanag na Linggo po!",
+
+  "#pro4a #cppo4a Thank you for this beautiful Sunday message of faith and encouragement for our PNP family. May every officer who reads this feel God's presence, His protection, and His deep appreciation for the noble work they do every single day. Amen!",
+
+  "#pro4a #cppo4a Ang serbisyo sa kapwa ay isa sa pinakamataas na anyo ng pagsamba sa Diyos. Ang ating mga pulis na naglilingkod nang tapat at may pagmamahal ay ginagawa ang kalooban ng Diyos sa bawat araw. Salamat sa Sunday blessing na ito. Nawa kayo ay patuloy na pagpalain!",
+
+  "#pro4a #cppo4a As another week begins, may every member of our PNP family carry with them the faith that God is their shield, their strength, and their guide. No challenge is too great and no road is too dark when you walk it with Him. Blessed week ahead po!"
+],
+  generalPNPComments: [
+  // PRIDE AND SUPPORT (1-10)
+  "#pro4a #cppo4a Proud of our PNP for consistently showing up and delivering real, meaningful service to every Filipino community. This is what Bagong PNP para sa Bagong Pilipinas truly looks like in action. Mabuhay ang PNP!",
+
+  "#pro4a #cppo4a The dedication and sacrifice of our men and women in uniform never go unnoticed. Thank you, PNP, for always giving your best for the safety and welfare of every Filipino. Saludo sa inyong serbisyo!",
+
+  "#pro4a #cppo4a Stories like this remind us why we are proud to have the PNP looking out for our communities every single day. Keep up the outstanding work and stay safe always. Mabuhay ang ating mga pulis!",
+
+  "#pro4a #cppo4a Behind every post, every operation, and every initiative is a police force that genuinely cares for the people it serves. Thank you, PNP, for making your service real, felt, and truly meaningful to every Filipino!",
+
+  "#pro4a #cppo4a Ang PNP ay hindi lamang isang organisasyon. Ito ay isang pamilya ng mga taong naglilingkod nang buong puso para sa bawat Pilipino. Ipinagmamalaki namin kayo at patuloy kaming sumusuporta sa inyong misyon. Mabuhay!",
+
+  "#pro4a #cppo4a This is the kind of police force every Filipino deserves — one that is present, accountable, and genuinely committed to making our communities safer and better every single day. Keep it up, PNP!",
+
+  "#pro4a #cppo4a Every effort made by the PNP, big or small, contributes to a safer and more peaceful Philippines. Thank you for never giving up and never slowing down in your mission to serve and protect every Filipino!",
+
+  "#pro4a #cppo4a The PNP continues to prove that true public service comes from the heart. Thank you for the dedication, the sacrifice, and the genuine love for the communities you serve. We are truly grateful and proud of you all!",
+
+  "#pro4a #cppo4a Seeing the PNP in action always gives every Filipino reason to be hopeful and confident. Our communities are in good hands and that is something we can all take comfort in every single day. Mabuhay ang PNP!",
+
+  "#pro4a #cppo4a Hindi lang salita ang serbisyo ng PNP. Ito ay nakikita at nararamdaman sa bawat aksyon, bawat operasyon, at bawat kilos ng pagmamalasakit para sa bawat Pilipinong kanilang pinaglilingkuran. Saludo sa ating mga pulis!",
+
+  // SERVICE AND DEDICATION (11-20)
+  "#pro4a #cppo4a Day in and day out, the PNP shows up and gives everything they have for the safety and welfare of every Filipino. That kind of unwavering dedication is what makes our police force truly worthy of our trust and respect!",
+
+  "#pro4a #cppo4a The PNP does not just enforce the law. They build trust, strengthen communities, and make every Filipino feel that help is always within reach. This is what genuine and people-centered public service truly looks like!",
+
+  "#pro4a #cppo4a What makes the PNP truly remarkable is not just the operations and achievements but the genuine care and dedication behind every single action they take for the benefit of the communities they serve. Proud of our PNP!",
+
+  "#pro4a #cppo4a Serbisyong Tapat at Nararamdaman is not just a tagline for the PNP. It is a daily commitment lived out through every action, every operation, and every act of kindness toward the Filipino people. Mabuhay ang PNP!",
+
+  "#pro4a #cppo4a The strength of the PNP lies not just in its numbers but in the quality of service and the sincerity of heart that every officer brings to their duty every single day. Thank you for being that kind of police force for us!",
+
+  "#pro4a #cppo4a Ang tunay na tagumpay ng PNP ay hindi lamang nakikita sa mga istatistika at ulat kundi nararamdaman sa bawat komunidad na ligtas, payapa, at may tiwala sa kanilang mga pulis. Ito ang tunay na serbisyo. Mabuhay!",
+
+  "#pro4a #cppo4a Every Filipino deserves to feel safe in their own community and the PNP works tirelessly every day to make sure that happens. Thank you for your commitment, your courage, and your genuine love for the people you serve!",
+
+  "#pro4a #cppo4a The PNP never stops working for the Filipino people and that consistency is what builds the kind of trust that lasts. Thank you for showing up every single day with the same dedication and the same heart of service. Saludo!",
+
+  "#pro4a #cppo4a From the biggest operations to the smallest acts of kindness, the PNP always finds a way to make its presence felt in the most meaningful way possible. This is Serbisyong Nararamdaman at its finest. Well done, PNP!",
+
+  "#pro4a #cppo4a Ang bawat pulis na nagsusuot ng uniporme ay nagdadala ng responsibilidad na higit pa sa kanyang sarili. Sila ay naglilingkod para sa bawat Pilipino at para sa mas magandang kinabukasan ng ating bansa. Salamat at mabuhay ang PNP!",
+
+  // COMMUNITY AND TRUST (21-30)
+  "#pro4a #cppo4a A police force that is trusted by its community is a police force that truly serves with integrity and compassion. The PNP continues to earn that trust every day through consistent, meaningful, and heartfelt service. Keep it up!",
+
+  "#pro4a #cppo4a The relationship between the PNP and the communities they serve is built on trust, respect, and genuine partnership. Thank you for nurturing that relationship every single day through your actions and your dedication to public safety!",
+
+  "#pro4a #cppo4a Community safety is a shared responsibility and the PNP leads the way by example. Thank you for inspiring every Filipino to take an active role in keeping our neighborhoods safe and our communities peaceful and united!",
+
+  "#pro4a #cppo4a Ang isang komunidad na may maayos na ugnayan sa kanilang kapulisan ay isang komunidad na ligtas at payapa. Patuloy na pinapatunayan ng PNP na ang pakikipagtulungan sa komunidad ay susi sa isang mas maunlad na lipunan!",
+
+  "#pro4a #cppo4a The PNP understands that real public safety goes beyond law enforcement. It is about building genuine relationships with communities and making every Filipino feel that their police force is truly on their side. Proud of our PNP!",
+
+  "#pro4a #cppo4a Trust is earned one action at a time and the PNP earns it every single day through transparent, accountable, and compassionate police service. Thank you for being the kind of police force that every Filipino can count on!",
+
+  "#pro4a #cppo4a When the community and the police work together, the results are always better for everyone. Thank you, PNP, for always prioritizing community engagement and partnership in everything that you do for our safety and well-being!",
+
+  "#pro4a #cppo4a Ang PNP ay hindi lamang nagtatanggol ng batas kundi nagtatayo rin ng tulay ng tiwala at pagkakaisa sa pagitan ng kapulisan at ng komunidad. Ito ang pundasyon ng isang ligtas at mapayapang lipunan. Mabuhay ang PNP!",
+
+  "#pro4a #cppo4a The PNP's presence in our communities is not just about enforcement. It is about partnership, compassion, and making every Filipino feel valued, heard, and protected. Thank you for being that kind of police force for all of us!",
+
+  "#pro4a #cppo4a Safety does not happen by accident. It is the result of hard work, dedication, and genuine partnership between the police and the communities they serve. Thank you, PNP, for making that partnership real and meaningful every day!",
+
+  // EXCELLENCE AND PROFESSIONALISM (31-40)
+  "#pro4a #cppo4a The PNP continues to raise the bar when it comes to professional and people-centered police service. Every action taken reflects the commitment of the entire organization to excellence and genuine public service. Magaling at mabuhay!",
+
+  "#pro4a #cppo4a Professionalism, integrity, and genuine dedication to public service — these are the values that define our PNP and make every Filipino proud to have them as their protectors. Thank you for consistently living up to these values!",
+
+  "#pro4a #cppo4a Ang kahusayan ng PNP ay hindi nangyayari nang walang pagsisikap. Ito ay bunga ng dedikasyon, disiplina, at tunay na pagmamahal sa serbisyong ibinibigay sa bawat Pilipino araw at gabi. Saludo sa ating buong PNP family!",
+
+  "#pro4a #cppo4a The PNP sets a high standard for public service and then works every single day to meet and exceed that standard for the benefit of every Filipino. This is what organizational excellence and genuine dedication truly look like!",
+
+  "#pro4a #cppo4a Every member of the PNP contributes to the overall quality of service delivered to the Filipino public. Together they form a police force that is greater than the sum of its parts. Thank you for your collective excellence and dedication!",
+
+  "#pro4a #cppo4a Discipline, dedication, and a genuine heart for public service — these are the qualities that make the PNP one of the most respected institutions in the country. Keep upholding these values and keep making every Filipino proud!",
+
+  "#pro4a #cppo4a Ang PNP ay patuloy na nagpapabuti at nagbabago para sa mas mahusay na serbisyo sa bawat Pilipino. Ang mga pagbabagong ito ay patunay na ang Bagong PNP para sa Bagong Pilipinas ay hindi lamang pangarap kundi isang katotohanang nangyayari na!",
+
+  "#pro4a #cppo4a Excellence in public service is not a destination but a journey and the PNP walks that journey every single day with commitment, professionalism, and a genuine desire to make a positive difference in every Filipino community!",
+
+  "#pro4a #cppo4a The PNP's commitment to continuous improvement and excellence in service delivery is something every Filipino should appreciate and celebrate. Thank you for always striving to be better for the sake of the people you serve!",
+
+  "#pro4a #cppo4a From leadership to the ranks, the PNP operates as one united team with one common goal — to serve and protect every Filipino with the highest standards of professionalism, integrity, and genuine public service. Mabuhay ang PNP!",
+
+  // GRATITUDE AND INSPIRATION (41-50)
+  "#pro4a #cppo4a To every police officer who has ever doubted whether their service makes a difference — it does. Every life protected, every criminal caught, and every community made safer is proof that your work matters. Thank you and keep going!",
+
+  "#pro4a #cppo4a The sacrifices made by our PNP family do not go unnoticed. Every missed family dinner, every sleepless night, and every dangerous situation faced in the line of duty is a testament to the depth of their commitment to serving the nation!",
+
+  "#pro4a #cppo4a Salamat sa bawat pulis na nagpapatuloy sa kanilang tungkulin kahit mahirap, kahit mapanganib, at kahit hindi palaging nakikita ang kanilang sakripisyo. Alam naming kayo ay naglilingkod nang buong puso at para doon ay nagpapasalamat kami!",
+
+  "#pro4a #cppo4a The men and women of the PNP inspire us every day to believe in a better and safer Philippines. Their dedication, courage, and genuine love for the Filipino people are the reasons we remain hopeful and proud as a nation!",
+
+  "#pro4a #cppo4a Every time the PNP shows up for our communities, they remind us that there are still people who genuinely care about making this country a better place for everyone. Thank you for being that reminder for all of us. Mabuhay!",
+
+  "#pro4a #cppo4a Ang paglilingkod sa kapwa ay hindi madaling landas ngunit ito ang piniling daan ng ating mga pulis araw at gabi. Para sa lahat ng inyong sakripisyo at dedikasyon, taos-puso kaming nagpapasalamat. Patuloy kayong maglingkod nang may dangal!",
+
+  "#pro4a #cppo4a To the PNP family — your service is seen, your sacrifices are appreciated, and your dedication to keeping every Filipino safe is something we will never take for granted. Thank you for everything you do and everything you are!",
+
+  "#pro4a #cppo4a The PNP gives us reason to be proud every single day. Whether through major accomplishments or quiet acts of service, they never stop showing up for the Filipino people. That consistency is what makes them truly deserving of our trust!",
+
+  "#pro4a #cppo4a Proud does not even begin to describe how we feel about our PNP. They are more than just law enforcers. They are community builders, public servants, and everyday heroes who make the Philippines a better place one day at a time!",
+
+  "#pro4a #cppo4a To the entire PNP family — thank you for choosing a life of service, for embracing the sacrifices that come with the badge, and for never losing sight of the reason you put on the uniform every day. You are our everyday heroes. Mabuhay!"
+],
+  courtesyCallComments: [
+  // PARTNERSHIP AND COLLABORATION (1-10)
+  "#pro4a #cppo4a Strong partnerships between the PNP and our government officials lead to better and more effective public service for every Filipino. Great to see this important courtesy call taking place. Looking forward to the positive outcomes it will bring!",
+
+  "#pro4a #cppo4a Building bridges with our local and national leaders is just as important as frontline operations. Kudos to the PNP for taking the initiative to strengthen these vital relationships for the benefit of every community they serve!",
+
+  "#pro4a #cppo4a When law enforcement and government officials work hand in hand, the whole nation benefits. Great to see the PNP fostering this important partnership through meaningful dialogue and open communication. Mabuhay ang kooperasyon!",
+
+  "#pro4a #cppo4a Ang tagumpay ng anumang misyon ay nakasalalay sa maayos na pakikipagtulungan sa iba't ibang ahensya at opisyal ng pamahalaan. Magandang hakbang ito ng PNP sa pagpapalakas ng ugnayan para sa mas mahusay na serbisyo sa publiko!",
+
+  "#pro4a #cppo4a Courtesy calls like this go a long way in building the kind of institutional relationships that lead to better coordination, stronger partnerships, and more effective public service for every Filipino community. Well done, PNP!",
+
+  "#pro4a #cppo4a The PNP's proactive approach in reaching out to government officials and community leaders reflects its commitment to building meaningful partnerships that ultimately benefit the people they serve. This is leadership at its finest!",
+
+  "#pro4a #cppo4a Great things happen when the right people sit down together and talk. This courtesy call is a meaningful step toward stronger coordination and more impactful collaboration between the PNP and its partner agencies. Tuloy ang magandang samahan!",
+
+  "#pro4a #cppo4a Ang isang PNP na may matibay na ugnayan sa mga opisyal ng pamahalaan ay isang PNP na mas epektibo sa paghahatid ng serbisyo sa bawat Pilipino. Magandang pakikita ang ganitong uri ng kooperasyon at pakikipagtulungan!",
+
+  "#pro4a #cppo4a Collaboration is the key to effective governance and public safety. Courtesy calls like this open the door to stronger partnerships and better outcomes for the communities that both the PNP and our government officials serve!",
+
+  "#pro4a #cppo4a The PNP understands that it cannot do its job alone. Building strong relationships with government officials and partner agencies is essential to delivering the kind of service every Filipino deserves. Great initiative, PNP!",
+
+  // RESPECT AND PROFESSIONALISM (11-20)
+  "#pro4a #cppo4a A simple courtesy call speaks volumes about the PNP's respect for its partners in government and its commitment to maintaining open and productive lines of communication. This is professional and principled leadership in action!",
+
+  "#pro4a #cppo4a The PNP's culture of respect and professionalism extends beyond its operations and into its relationships with government officials and community leaders. Courtesy calls like this are proof of that culture. Well done, PNP!",
+
+  "#pro4a #cppo4a Respeto, kooperasyon, at bukas na komunikasyon — ito ang pundasyon ng isang maayos na pakikipagtulungan sa pagitan ng PNP at ng ating mga opisyal ng pamahalaan. Magandang makita ang ganitong uri ng propesyonalismo mula sa ating kapulisan!",
+
+  "#pro4a #cppo4a Courtesy and professionalism go hand in hand in building the kind of institutional trust that leads to better governance and more effective public safety. The PNP continues to demonstrate both in everything it does. Proud of our police force!",
+
+  "#pro4a #cppo4a A police force that respects its partners in government is a police force that understands the importance of working together for the greater good. This courtesy call reflects exactly that kind of mature and principled leadership!",
+
+  "#pro4a #cppo4a The PNP's willingness to reach out, engage, and build relationships with government officials at all levels is a testament to its commitment to collaborative and people-centered governance. This is the Bagong PNP we are proud of!",
+
+  "#pro4a #cppo4a Ang PNP ay nagpapatunay sa bawat pagkakataon na ang respeto at propesyonalismo ay hindi lamang para sa loob ng organisasyon kundi pati na rin sa pakikitungo sa mga kasosyo sa pamahalaan at komunidad. Magaling at mabuhay ang PNP!",
+
+  "#pro4a #cppo4a Institutional respect is the foundation of effective interagency collaboration and the PNP demonstrates this through meaningful engagements like this courtesy call. Looking forward to seeing the fruits of this partnership for our communities!",
+
+  "#pro4a #cppo4a The way the PNP engages with its partners in government reflects the kind of mature, professional, and principled institution it has become under the Bagong PNP para sa Bagong Pilipinas vision. This courtesy call is a great example of that!",
+
+  "#pro4a #cppo4a Courtesy calls may seem simple but they carry a powerful message — that the PNP values its relationships with government officials and is committed to working together for the safety and welfare of every Filipino. Saludo sa PNP!",
+
+  // COMMUNITY IMPACT (21-30)
+  "#pro4a #cppo4a At the end of the day, it is the communities that benefit most from strong partnerships between the PNP and government officials. Courtesy calls like this are the first step toward better coordination and more impactful public service!",
+
+  "#pro4a #cppo4a Every meaningful conversation between the PNP and our government leaders brings us one step closer to safer and better-served communities across the Philippines. Thank you for taking the time to build these important relationships!",
+
+  "#pro4a #cppo4a Ang bawat magandang pakikipagpulong ng PNP sa ating mga lider ng pamahalaan ay nagbubukas ng bagong oportunidad para sa mas mabuting serbisyo at mas ligtas na komunidad para sa bawat Pilipino. Magandang inisyatiba ito ng PNP!",
+
+  "#pro4a #cppo4a When government officials and law enforcement work together with a shared vision for public safety, the communities they serve are the ultimate winners. This courtesy call is a step in the right direction for all of us. Mabuhay!",
+
+  "#pro4a #cppo4a Strong interagency relationships translate to stronger communities and better public safety outcomes for every Filipino. The PNP's commitment to building these relationships through courtesy calls like this is truly commendable!",
+
+  "#pro4a #cppo4a The real impact of a courtesy call is felt not in the meeting room but in the communities that benefit from the stronger partnerships and better coordination that follow. The PNP understands this and continues to build those bridges!",
+
+  "#pro4a #cppo4a Ang maayos na ugnayan sa pagitan ng PNP at ng ating mga opisyal ng pamahalaan ay nagbubunga ng mas epektibong serbisyo para sa bawat komunidad. Patuloy na ipagpatuloy ng PNP ang ganitong uri ng makabuluhang pakikipag-ugnayan!",
+
+  "#pro4a #cppo4a Communities thrive when the people who serve them communicate, collaborate, and work toward a common goal. This courtesy call is proof that the PNP is committed to that kind of collaborative approach to public safety and governance!",
+
+  "#pro4a #cppo4a Every handshake between the PNP and our government leaders is a promise to the communities they both serve — a promise to work together, communicate openly, and deliver the best possible public service for every Filipino!",
+
+  "#pro4a #cppo4a The PNP's dedication to building and maintaining strong relationships with government officials across all levels of governance is a key ingredient in its recipe for effective, responsive, and community-centered police service. Well done!",
+
+  // LEADERSHIP AND INITIATIVE (31-40)
+  "#pro4a #cppo4a Great leadership means knowing when to reach out and build bridges. The PNP's initiative in conducting this courtesy call reflects the kind of proactive and forward-thinking leadership that every Filipino can be proud of. Mabuhay ang PNP!",
+
+  "#pro4a #cppo4a It takes strong and confident leadership to prioritize relationship-building alongside operational excellence. The PNP continues to demonstrate that kind of balanced and visionary leadership through engagements like this courtesy call!",
+
+  "#pro4a #cppo4a Ang PNP sa ilalim ng kasalukuyang pamumuno ay patuloy na nagpapakita ng inisyatiba sa pagbuo ng matibay na relasyon sa mga opisyal ng pamahalaan. Ito ay palatandaan ng isang organisasyong may malinaw na direksyon at mataas na antas ng propesyonalismo!",
+
+  "#pro4a #cppo4a Leaders who build relationships build legacies. The PNP's commitment to engaging with government officials through courtesy calls and meaningful dialogue is a testament to the quality of leadership guiding the organization today!",
+
+  "#pro4a #cppo4a Proactive engagement with government officials is a hallmark of mature and effective institutional leadership. The PNP continues to demonstrate this through courtesy calls that strengthen partnerships and open doors for better collaboration!",
+
+  "#pro4a #cppo4a The PNP's leadership understands that the key to effective public safety lies in strong relationships with all stakeholders. Courtesy calls like this are not just formalities — they are strategic investments in better governance and public service!",
+
+  "#pro4a #cppo4a Ang isang organisasyong may malakas na pamumuno ay hindi lamang naghihintay ng pagkakataon upang makipagtulungan. Aktibo itong naghahanap ng paraan upang palakasin ang ugnayan at mapabuti ang serbisyo. Ito ang PNP na aming kilala at ipinagmamalaki!",
+
+  "#pro4a #cppo4a Leadership is not just about giving orders. It is about building relationships that make the entire organization more effective in serving the public. The PNP demonstrates this principle beautifully through engagements like this courtesy call!",
+
+  "#pro4a #cppo4a The initiative shown by the PNP in conducting this courtesy call speaks to the quality of leadership within the organization. Strong leaders build strong partnerships and strong partnerships lead to better outcomes for every Filipino!",
+
+  "#pro4a #cppo4a Courtesy calls are more than just protocol. They are opportunities for the PNP to align its priorities with those of its government partners and ensure that every Filipino receives the best possible service from all institutions that serve them!",
+
+  // POSITIVE OUTCOMES AND FORWARD LOOKING (41-50)
+  "#pro4a #cppo4a Looking forward to seeing the positive outcomes of this courtesy call reflected in better coordination, stronger partnerships, and more effective public safety initiatives for the benefit of every Filipino community. Great initiative, PNP!",
+
+  "#pro4a #cppo4a Every productive courtesy call plants the seeds of collaboration that eventually grow into meaningful programs and initiatives that benefit the communities both the PNP and our government officials are committed to serving. Tuloy ang galing!",
+
+  "#pro4a #cppo4a Ang magandang pakikipagtulungan ay nagsisimula sa isang simpleng pagbisita at pakikipag-usap. Ang courtesy call na ito ay simula ng mas malalim na kooperasyon na magbubunga ng mas ligtas at mas maunlad na komunidad para sa bawat Pilipino!",
+
+  "#pro4a #cppo4a The conversations that happen in courtesy calls like this often lead to the policies, programs, and initiatives that make real differences in the lives of ordinary Filipinos. Thank you, PNP, for always thinking ahead and building the right relationships!",
+
+  "#pro4a #cppo4a Small steps lead to big changes and this courtesy call is one of those important steps toward a more coordinated, more collaborative, and more effective approach to public safety and governance in our communities. Well done, PNP!",
+
+  "#pro4a #cppo4a The PNP's forward-looking approach to building relationships with government officials ensures that it remains a relevant, responsive, and effective institution in the lives of every Filipino. This courtesy call is a great example of that approach!",
+
+  "#pro4a #cppo4a Ang bawat magandang relasyong naitatayo ng PNP sa mga opisyal ng pamahalaan ay isang pundasyon ng mas mahusay na kinabukasan para sa ating mga komunidad. Patuloy na itayo ang mga tulay na ito para sa kapakanan ng bawat Pilipino!",
+
+  "#pro4a #cppo4a Relationships built today become the partnerships that solve tomorrow's challenges. The PNP's commitment to engaging with government officials through courtesy calls like this is an investment in a safer and better Philippines for all of us!",
+
+  "#pro4a #cppo4a The PNP continues to show that it is not just an enforcement agency but a true partner in governance and community development. Courtesy calls like this are proof of that commitment to collaborative and people-centered public service. Mabuhay!",
+
+  "#pro4a #cppo4a Here is to stronger partnerships, better coordination, and more impactful public service for every Filipino community. Thank you, PNP, for always taking the initiative to build the relationships that make all of this possible. Tuloy ang Bagong PNP!"
+]
+  
 
 };
 
